@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.dikeuche.com)",
+      "Bash(curl -sL https://www.dikeuche.com/portfolio -o /tmp/portfolio.html)",
+      "Read(//tmp/**)",
+      "Bash(grep -oE '\"\\(title|name|label\\)\":\"[^\"]{3,60}\"' /tmp/portfolio.html)",
+      "Bash(curl -sL https://www.dikeuche.com/sitemap.xml)",
+      "Bash(curl -sL https://www.dikeuche.com/portfolio-projects-sitemap.xml)",
+      "Bash(curl -sL https://www.dikeuche.com/portfolio-collections-sitemap.xml)",
+      "Bash(curl -sL https://www.dikeuche.com/pages-sitemap.xml)",
+      "Bash(curl -sL https://www.dikeuche.com/ -o proj-home.html)",
+      "Bash(curl -sL https://www.dikeuche.com/about -o proj-about.html)",
+      "Bash(mkdir -p wiximg)",
+      "Bash(python3 -)",
+      "Bash(npm --version)",
+      "Bash(npx create-next-app@latest /Users/dikeuche/Documents/Dev/portfolio --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --yes)"
+    ]
+  }
+}
