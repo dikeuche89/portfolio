@@ -86,7 +86,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line py-6 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">
-          <span>© 2026 Dike Uche — designed & built by me</span>
+          <span>© 2026 Dike Uche · designed & built by me</span>
           <Magnetic strength={0.45}>
             <button
               type="button"

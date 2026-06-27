@@ -69,7 +69,7 @@ export default function WorkGallery({ projects }: { projects: Project[] }) {
               : "flex flex-col"
           }
         >
-          <p className="kicker mb-5">( 01 — Selected work )</p>
+          <p className="kicker mb-5">( 01 · Selected work )</p>
           <h2 className="display text-[clamp(2.5rem,6vw,4.75rem)]">
             Selected
             <br />
@@ -83,7 +83,7 @@ export default function WorkGallery({ projects }: { projects: Project[] }) {
                 <br />
               </>
             )}
-            2020 — 2026
+            2020 to 2026
           </p>
         </div>
 
@@ -119,7 +119,7 @@ export default function WorkGallery({ projects }: { projects: Project[] }) {
               </h3>
               <p className="kicker mt-2 flex items-center justify-between normal-case tracking-[0.08em]">
                 <span>
-                  {p.type} — {p.year}
+                  {p.type} · {p.year}
                 </span>
                 <span className="text-lg transition-transform duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-accent">
                   ↗

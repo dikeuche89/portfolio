@@ -32,7 +32,7 @@ export default function OpenGraphImage() {
           }}
         >
           <span>Dike Uche ©</span>
-          <span>Portfolio — 2026</span>
+          <span>Portfolio · 2026</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 130, fontWeight: 700, letterSpacing: "-0.02em" }}>
@@ -54,7 +54,7 @@ export default function OpenGraphImage() {
             color: "#8f8c86",
           }}
         >
-          <span>UX designer × full-stack builder</span>
+          <span>UX designer × full stack builder</span>
           <span>dikeuche.com</span>
         </div>
       </div>

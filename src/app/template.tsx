@@ -34,7 +34,7 @@ export default function Template({ children }: { children: ReactNode }) {
     }
 
     if (firstLoad) {
-      // gentle reveal — don't cover the hero's own entrance
+      // gentle reveal, don't cover the hero's own entrance
       gsap.set(overlay.current, { display: "none" });
       gsap.fromTo(
         content.current,

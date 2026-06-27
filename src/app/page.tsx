@@ -9,7 +9,7 @@ import { projects } from "@/data/projects";
 const capabilities = [
   {
     title: "Product Design",
-    blurb: "Research, flows and interfaces that earn their place on the screen.",
+    blurb: "Research, flows, and interfaces that earn their place on screen.",
     items: [
       "UX strategy",
       "User research",
@@ -20,24 +20,24 @@ const capabilities = [
   },
   {
     title: "Design Systems",
-    blurb: "Three systems built from zero — tokens, components, and the docs to scale them.",
+    blurb: "Three systems built from scratch: tokens, components, and the docs to scale them.",
     items: [
       "Token architecture",
       "Component libraries",
       "Figma libraries",
       "Documentation",
-      "Cross-team governance",
+      "Governance across teams",
     ],
   },
   {
-    title: "Full-Stack Build",
+    title: "Full Stack Build",
     blurb: "From Figma to production. I ship what I design.",
     items: [
       "React & Next.js",
       "TypeScript",
       "Tailwind CSS",
       "Node & APIs",
-      "AI-powered workflows",
+      "Workflows with AI",
     ],
   },
 ];
@@ -53,23 +53,23 @@ export default function Home() {
           "Design systems",
           "Frontend engineering",
           "UX strategy",
-          "Full-stack build",
+          "Full stack build",
         ]}
         className="mt-6"
       />
 
-      {/* selected work — horizontal scroll gallery */}
+      {/* selected work: horizontal scroll gallery */}
       <WorkGallery projects={projects} />
 
       {/* manifesto */}
       <section className="px-5 pt-28 md:px-10 md:pt-44">
         <Reveal>
-          <p className="kicker mb-8">( 02 — The point )</p>
+          <p className="kicker mb-8">( 02 · The point )</p>
         </Reveal>
         <WordScrub className="display max-w-6xl text-[clamp(1.75rem,4.5vw,4rem)] font-bold normal-case leading-[1.05]">
-          Most designers stop at handoff. I keep going — through the
-          components, the edge cases, and the deploy. Design that ships is the
-          only design that counts.
+          Most designers stop at handoff. I keep going. Through the components,
+          the edge cases, the deploy. Because design that ships is the only kind
+          that counts.
         </WordScrub>
         <Reveal delay={0.15} className="mt-10">
           <Link
@@ -84,7 +84,7 @@ export default function Home() {
       {/* capabilities */}
       <section className="px-5 pt-28 md:px-10 md:pt-44">
         <Reveal>
-          <p className="kicker mb-10 md:mb-14">( 03 — What I do )</p>
+          <p className="kicker mb-10 md:mb-14">( 03 · What I do )</p>
         </Reveal>
         <div className="grid gap-px overflow-hidden border border-line bg-line md:grid-cols-3">
           {capabilities.map((cap, i) => (
@@ -95,7 +95,7 @@ export default function Home() {
                 <p className="mt-4 text-sm leading-relaxed text-muted">{cap.blurb}</p>
                 <ul className="mt-8 space-y-2.5 border-t border-line pt-6 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted">
                   {cap.items.map((item) => (
-                    <li key={item}>— {item}</li>
+                    <li key={item}>· {item}</li>
                   ))}
                 </ul>
               </Reveal>
@@ -111,16 +111,16 @@ export default function Home() {
         </div>
         <div className="flex flex-col justify-center md:col-span-6 md:col-start-7">
           <Reveal>
-            <p className="kicker mb-8">( 04 — About )</p>
+            <p className="kicker mb-8">( 04 · About )</p>
           </Reveal>
           <SplitReveal className="display text-[clamp(2rem,4.5vw,3.75rem)]">
             A designer who got tired of watching good work die in handoff.
           </SplitReveal>
           <Reveal delay={0.15}>
             <p className="mt-8 max-w-md leading-relaxed text-muted">
-              I design and build digital products from idea to launch —
-              combining product thinking, UX craft, and AI-powered workflows.
-              Figma to production code, with everything in between.
+              I design and build digital products from idea to launch. Product
+              thinking, UX craft, and a healthy dose of AI in the workflow.
+              Figma to production code, and everything in between.
             </p>
             <Link
               href="/about"
@@ -135,7 +135,7 @@ export default function Home() {
       {/* testimonial */}
       <section className="px-5 pt-28 md:px-10 md:pt-44">
         <Reveal>
-          <p className="kicker mb-10">( 05 — Word on the street )</p>
+          <p className="kicker mb-10">( 05 · Word on the street )</p>
         </Reveal>
         <SplitReveal
           as="blockquote"
@@ -148,7 +148,7 @@ export default function Home() {
         </SplitReveal>
         <Reveal delay={0.15}>
           <p className="kicker mt-10">
-            Daniel Eordogh — SVP of Product & Technology, LeoVegas Group
+            Daniel Eordogh, SVP of Product & Technology at LeoVegas Group
           </p>
         </Reveal>
       </section>

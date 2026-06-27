@@ -138,7 +138,7 @@ function CaseBlock({ block, accent }: { block: Block; accent: string }) {
             {[block.left, block.right].map((side, s) => (
               <div key={side.title} className="bg-bg p-6 md:p-8">
                 <p className="kicker mb-6" style={s === 1 ? { color: accent } : undefined}>
-                  {s === 0 ? "— " : "+ "}
+                  {s === 0 ? "✕ " : "✓ "}
                   {side.title}
                 </p>
                 <ul className="space-y-4">
@@ -288,7 +288,7 @@ export default async function ProjectPage({
         />
         <Reveal>
           <p className="kicker">
-            ( Case study — 0{index + 1} / 0{projects.length} )
+            ( Case study · 0{index + 1} / 0{projects.length} )
           </p>
         </Reveal>
         <SplitReveal

@@ -109,7 +109,7 @@ export default function HeroCanvas({ accent = "#ff4d24" }: { accent?: string }) 
           glow = Math.max(glow, s);
         }
 
-        // touch ripples — a push outward as the ring passes
+        // touch ripples: a push outward as the ring passes
         for (const r of ripples) {
           const age = (now - r.t0) / RIPPLE_MS;
           const ring = age * RIPPLE_MAX;

@@ -89,7 +89,7 @@ export default function Hero() {
         className="relative flex flex-col justify-center will-change-transform"
       >
         <p data-hero-fade className="kicker invisible mb-7">
-          ( Dike Uche — UX designer × full-stack builder )
+          ( Dike Uche · UX designer × full stack builder )
         </p>
 
         <h1
@@ -109,8 +109,8 @@ export default function Hero() {
             className="invisible max-w-md text-base leading-relaxed text-muted md:text-lg"
           >
             Eight years of designing digital products. Now I write the code that
-            ships them — strategy, design systems, and frontend execution, end
-            to end.
+            ships them too. The strategy, the design systems, the frontend, all
+            the way through.
           </p>
           <p data-hero-fade className="kicker invisible md:text-right">
             Scroll
@@ -125,9 +125,9 @@ export default function Hero() {
           data-hero-fade
           className="invisible mt-10 grid grid-cols-2 gap-4 border-t border-line pt-5 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted md:grid-cols-4"
         >
-          <span>Based — Remote</span>
-          <span>Currently — Co-founder @ Kiphar</span>
-          <span className="hidden md:block">Focus — Design × Code</span>
+          <span>Based · Remote</span>
+          <span>Currently · Cofounder @ Kiphar</span>
+          <span className="hidden md:block">Focus · Design × Code</span>
           <span className="flex items-center justify-end gap-2 text-right">
             <span className="pulse-dot" aria-hidden />
             Open to work

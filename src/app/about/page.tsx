@@ -7,14 +7,14 @@ import { site } from "@/data/projects";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Dike Uche — UX designer turned full-stack builder. Eight years of product design, now shipping the code too.",
+    "Dike Uche, UX designer turned full stack builder. Eight years of product design, now shipping the code too.",
 };
 
 const experience = [
   {
     company: "Kiphar",
-    role: "Co-founder · Design & Build",
-    period: "2023 — Present",
+    role: "Cofounder · design & build",
+    period: "2023 to now",
   },
   {
     company: "CST Savings",
@@ -24,17 +24,17 @@ const experience = [
   {
     company: "Tipico",
     role: "UI/UX Designer",
-    period: "2022 — 2023",
+    period: "2022 to 2023",
   },
   {
     company: "BookingPal",
     role: "Product Designer",
-    period: "2020 — 2022",
+    period: "2020 to 2022",
   },
   {
     company: "Upwork",
-    role: "Freelance Designer — 20+ projects",
-    period: "2018 — 2022",
+    role: "Freelance designer, 20+ projects",
+    period: "2018 to 2022",
   },
 ];
 
@@ -68,7 +68,7 @@ export default function AboutPage() {
     <div className="px-5 pt-32 md:px-10 md:pt-44">
       {/* intro */}
       <Reveal>
-        <p className="kicker">( About — Dike Uche )</p>
+        <p className="kicker">( About · Dike Uche )</p>
       </Reveal>
       <SplitReveal
         as="h1"
@@ -87,28 +87,28 @@ export default function AboutPage() {
         <div className="space-y-7 text-lg leading-relaxed text-fg/90 md:col-span-6 md:col-start-7 md:text-xl">
           <Reveal>
             <p>
-              I&apos;m Dike — a product designer who got tired of watching good
-              design die in handoff, so I learned to build.
+              I&apos;m Dike, a product designer who got tired of watching good
+              design die in handoff. So I learned to build.
             </p>
           </Reveal>
           <Reveal delay={0.05}>
             <p>
-              I started freelancing on Upwork in 2018 and shipped 20+ projects
-              across fintech, travel and e-commerce. From there: leading
-              interface design at BookingPal, the core betting experience at
-              Tipico — where user retention climbed from 21% to 46% during my
-              time — and design systems for CST Savings. In 2023 I co-founded
-              Kiphar, a community utility app, and owned it end to end for the
-              first time: research, design, and the build.
+              I started freelancing on Upwork back in 2018 and shipped 20+
+              projects across fintech, travel, and ecommerce. From there I led
+              interface design at BookingPal, then the core betting experience
+              at Tipico, where retention climbed from 21% to 46% while I was
+              there, and design systems for CST Savings. In 2023 a friend and I
+              started Kiphar, a community app, and for the first time I owned the
+              whole thing: the research, the design, and the build.
             </p>
           </Reveal>
           <Reveal delay={0.1}>
             <p>
-              Today my toolkit runs from Figma to production code — React,
-              Next.js, TypeScript, Tailwind — with AI-powered workflows to move
-              from concept to working software fast. A business degree keeps me
-              honest about the part that matters: design only counts when it
-              ships and the numbers move.
+              These days my toolkit runs from Figma all the way to production
+              code: React, Next.js, TypeScript, Tailwind, with a good amount of
+              AI in the mix to get from idea to working software fast. A
+              business degree keeps me honest about the part that matters:
+              design only counts when it ships and the numbers move.
             </p>
           </Reveal>
         </div>
@@ -135,7 +135,7 @@ export default function AboutPage() {
         </div>
         <Reveal delay={0.1}>
           <p className="kicker mt-6">
-            BA Business Management — De Montfort University
+            BA Business Management, De Montfort University
           </p>
         </Reveal>
       </section>
@@ -152,7 +152,7 @@ export default function AboutPage() {
                 <h3 className="display text-2xl md:text-[1.75rem]">{col.label}</h3>
                 <ul className="mt-8 space-y-2.5 border-t border-line pt-6 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted">
                   {col.items.map((item) => (
-                    <li key={item}>— {item}</li>
+                    <li key={item}>· {item}</li>
                   ))}
                 </ul>
               </Reveal>
@@ -168,8 +168,8 @@ export default function AboutPage() {
             <p className="kicker mb-8">( Off the clock )</p>
           </Reveal>
           <WordScrub className="display max-w-xl text-[clamp(1.6rem,3.6vw,3rem)] font-bold normal-case leading-[1.08]">
-            Hiking trails, behind a camera, in the kitchen, or watching soccer —
-            and mentoring junior designers making their own jump.
+            Hiking trails, behind a camera, in the kitchen, or watching soccer.
+            And mentoring junior designers making the same jump I did.
           </WordScrub>
           <Reveal delay={0.1}>
             <a
