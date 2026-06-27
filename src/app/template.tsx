@@ -78,14 +78,14 @@ export default function Template({ children }: { children: ReactNode }) {
       <div
         ref={overlay}
         aria-hidden
-        className="fixed inset-0 z-[300] flex items-center justify-center bg-bg"
+        className="fixed inset-0 z-[300] flex items-center justify-center bg-accent"
       >
         <div
           ref={label}
-          className="display text-[clamp(2.5rem,8vw,6rem)] text-fg"
+          className="display text-[clamp(2.5rem,8vw,6rem)] text-bg"
         >
           {labelFor(pathname)}
-          <span className="accent">.</span>
+          <span>.</span>
         </div>
       </div>
       <div ref={content}>{children}</div>
