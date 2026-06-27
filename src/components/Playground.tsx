@@ -17,13 +17,20 @@ export default function Playground() {
   const [open, setOpen] = useState(false);
   const [accent, setAccent] = useState(DEFAULT);
   const [blueprint, setBlueprint] = useState(false);
+  const [heroDown, setHeroDown] = useState(false);
+
+  // set the accent token and let canvas-based bits (e.g. the hero dots) follow along
+  const applyAccent = (hex: string) => {
+    document.documentElement.style.setProperty("--color-accent", hex);
+    window.dispatchEvent(new CustomEvent("playground:accent", { detail: { hex } }));
+  };
 
   // restore saved prefs on mount
   useEffect(() => {
     const a = localStorage.getItem("pg-accent");
     const b = localStorage.getItem("pg-blueprint") === "1";
     if (a) {
-      document.documentElement.style.setProperty("--color-accent", a);
+      applyAccent(a);
       setAccent(a);
     }
     if (b) {
@@ -33,7 +40,7 @@ export default function Playground() {
   }, []);
 
   const pickAccent = (hex: string) => {
-    document.documentElement.style.setProperty("--color-accent", hex);
+    applyAccent(hex);
     localStorage.setItem("pg-accent", hex);
     setAccent(hex);
   };
@@ -45,6 +52,14 @@ export default function Playground() {
     setBlueprint(next);
   };
 
+  // keep the button label in sync with whether the hero is currently knocked over
+  useEffect(() => {
+    const onHero = (e: Event) =>
+      setHeroDown(!!(e as CustomEvent<{ active: boolean }>).detail?.active);
+    window.addEventListener("playground:hero", onHero);
+    return () => window.removeEventListener("playground:hero", onHero);
+  }, []);
+
   const shake = () => window.dispatchEvent(new CustomEvent("playground:shake"));
 
   return (
@@ -52,10 +67,17 @@ export default function Playground() {
       {/* blueprint overlay: a design grid + build notes, shown only in blueprint mode */}
       <div className="bp-overlay pointer-events-none fixed inset-0 z-[80]" aria-hidden>
         <div className="bp-grid absolute inset-0" />
+        {/* mobile: stacked down the left edge so they never collide. md+: corners. */}
         <span className="bp-note left-5 top-20 md:left-10">Next.js 16 · App Router · static</span>
-        <span className="bp-note right-5 top-20 md:right-10">GSAP + Lenis · fluid type: clamp()</span>
-        <span className="bp-note bottom-6 left-1/2 -translate-x-1/2">next/image · WebP</span>
-        <span className="bp-note bottom-6 right-5 md:right-10">designed & built by Dike</span>
+        <span className="bp-note left-5 top-28 md:left-auto md:right-10 md:top-20">
+          GSAP + Lenis · fluid type: clamp()
+        </span>
+        <span className="bp-note left-5 top-36 md:bottom-6 md:left-1/2 md:top-auto md:-translate-x-1/2">
+          next/image · WebP
+        </span>
+        <span className="bp-note left-5 top-44 md:bottom-6 md:left-auto md:right-10 md:top-auto">
+          designed &amp; built by Dike
+        </span>
       </div>
 
       {/* control panel */}
@@ -113,7 +135,7 @@ export default function Playground() {
               onClick={shake}
               className="mt-4 w-full rounded-lg border border-line py-2 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted transition-colors hover:border-fg hover:text-fg"
             >
-              Knock the hero over ↓
+              {heroDown ? "Reset the hero ↑" : "Knock the hero over ↓"}
             </button>
           </div>
         </div>

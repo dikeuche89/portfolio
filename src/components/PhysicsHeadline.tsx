@@ -21,6 +21,9 @@ export default function PhysicsHeadline() {
   const teardown = useRef<() => void>(() => {}); // fluid reset (animates letters home)
   const hard = useRef<() => void>(() => {}); // instant teardown (unmount / final step)
 
+  const emitState = (on: boolean) =>
+    window.dispatchEvent(new CustomEvent("playground:hero", { detail: { active: on } }));
+
   // masked char-rise intro (matches the rest of the site)
   useGSAP(
     () => {
@@ -141,6 +144,7 @@ export default function PhysicsHeadline() {
     Runner.run(runner, engine);
     gsap.set(rootEl, { autoAlpha: 0 });
     active.current = true;
+    emitState(true); // tell the playground panel to show "Reset"
 
     // instant teardown: reveal the real headline, then drop the toy
     hard.current = () => {
@@ -151,6 +155,7 @@ export default function PhysicsHeadline() {
       overlay.remove();
       active.current = false;
       resetting.current = false;
+      emitState(false); // back to "Knock the hero over"
       hard.current = () => {};
       teardown.current = () => {};
     };

@@ -50,7 +50,19 @@ export default function HeroCanvas({ accent = "#ff4d24" }: { accent?: string }) 
     }
 
     initGyro();
-    const [ar, ag, ab] = hexToRgb(accent);
+    // dot tint follows the live accent: seed from the CSS token (the playground
+    // may have restored a saved colour) and update on the playground's events
+    let rgb = hexToRgb(accent);
+    const css = getComputedStyle(document.documentElement)
+      .getPropertyValue("--color-accent")
+      .trim();
+    if (/^#[0-9a-f]{6}$/i.test(css)) rgb = hexToRgb(css);
+    const onAccent = (e: Event) => {
+      const hex = (e as CustomEvent<{ hex: string }>).detail?.hex;
+      if (hex && /^#[0-9a-f]{6}$/i.test(hex)) rgb = hexToRgb(hex);
+    };
+    window.addEventListener("playground:accent", onAccent);
+
     let dots: { x: number; y: number }[] = [];
     let W = 0;
     let H = 0;
@@ -76,6 +88,7 @@ export default function HeroCanvas({ accent = "#ff4d24" }: { accent?: string }) 
     const draw = () => {
       const now = performance.now();
       const t = (now - t0) / 1000;
+      const [ar, ag, ab] = rgb;
       const tilt = getTilt();
       const gx = tilt.x * GYRO;
       const gy = tilt.y * GYRO;
@@ -189,6 +202,7 @@ export default function HeroCanvas({ accent = "#ff4d24" }: { accent?: string }) 
       stop();
       io.disconnect();
       window.removeEventListener("resize", resize);
+      window.removeEventListener("playground:accent", onAccent);
       window.removeEventListener("mousemove", onMove);
       document.documentElement.removeEventListener("mouseleave", onLeave);
       canvas.parentElement?.removeEventListener("touchstart", onTouch);
