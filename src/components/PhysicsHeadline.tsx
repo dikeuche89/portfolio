@@ -79,8 +79,15 @@ export default function PhysicsHeadline() {
       const r = ch.getBoundingClientRect();
       const x = r.left - sRect.left;
       const y = r.top - sRect.top;
+      // copy the computed type so each letter keeps its font, size, weight & italic
+      const cs = getComputedStyle(ch);
       const el = ch.cloneNode(true) as HTMLElement;
-      el.style.cssText = `position:absolute;left:0;top:0;margin:0;white-space:nowrap;will-change:transform;transform:translate(${x}px,${y}px);`;
+      el.style.cssText =
+        "position:absolute;left:0;top:0;margin:0;white-space:nowrap;will-change:transform;transform-origin:center;" +
+        `font-family:${cs.fontFamily};font-size:${cs.fontSize};font-weight:${cs.fontWeight};` +
+        `font-style:${cs.fontStyle};font-stretch:${cs.fontStretch};line-height:${cs.lineHeight};` +
+        `letter-spacing:${cs.letterSpacing};text-transform:${cs.textTransform};color:${cs.color};` +
+        `transform:translate(${x}px,${y}px);`;
       overlay.appendChild(el);
       const body = Bodies.rectangle(x + r.width / 2, y + r.height / 2, r.width, r.height, {
         restitution: 0.5,
