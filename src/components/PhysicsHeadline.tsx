@@ -17,7 +17,9 @@ const LINE2 = "engineered.";
 export default function PhysicsHeadline() {
   const root = useRef<HTMLHeadingElement>(null);
   const active = useRef(false);
-  const teardown = useRef<() => void>(() => {});
+  const resetting = useRef(false);
+  const teardown = useRef<() => void>(() => {}); // fluid reset (animates letters home)
+  const hard = useRef<() => void>(() => {}); // instant teardown (unmount / final step)
 
   // masked char-rise intro (matches the rest of the site)
   useGSAP(
@@ -45,13 +47,13 @@ export default function PhysicsHeadline() {
     window.addEventListener("playground:shake", onShake);
     return () => {
       window.removeEventListener("playground:shake", onShake);
-      teardown.current();
+      hard.current();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function toggle() {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion() || resetting.current) return;
     if (active.current) teardown.current();
     else activate();
   }
@@ -74,7 +76,14 @@ export default function PhysicsHeadline() {
     const engine = Engine.create();
     engine.gravity.y = 1.1;
 
-    const items: { body: MBody; el: HTMLElement; w: number; h: number }[] = [];
+    const items: {
+      body: MBody;
+      el: HTMLElement;
+      w: number;
+      h: number;
+      homeX: number;
+      homeY: number;
+    }[] = [];
     for (const ch of chars) {
       const r = ch.getBoundingClientRect();
       const x = r.left - sRect.left;
@@ -96,7 +105,7 @@ export default function PhysicsHeadline() {
       });
       Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.25);
       Body.setVelocity(body, { x: (Math.random() - 0.5) * 5, y: -Math.random() * 7 });
-      items.push({ body, el, w: r.width, h: r.height });
+      items.push({ body, el, w: r.width, h: r.height, homeX: x, homeY: y });
     }
 
     const wall = { isStatic: true };
@@ -133,14 +142,38 @@ export default function PhysicsHeadline() {
     gsap.set(rootEl, { autoAlpha: 0 });
     active.current = true;
 
-    teardown.current = () => {
+    // instant teardown: reveal the real headline, then drop the toy
+    hard.current = () => {
       Events.off(engine, "afterUpdate", sync);
       Runner.stop(runner);
       Engine.clear(engine);
-      overlay.remove();
       gsap.set(rootEl, { autoAlpha: 1 });
+      overlay.remove();
       active.current = false;
+      resetting.current = false;
+      hard.current = () => {};
       teardown.current = () => {};
+    };
+
+    // fluid reset: each letter flies back to its spot and rotates upright,
+    // then we hand off to the real <h1> underneath (they line up exactly)
+    teardown.current = () => {
+      resetting.current = true;
+      Events.off(engine, "afterUpdate", sync); // stop physics driving transforms
+      Runner.stop(runner);
+      const tl = gsap.timeline({ onComplete: () => hard.current() });
+      items.forEach((it, i) => {
+        gsap.set(it.el, {
+          x: it.body.position.x - it.w / 2,
+          y: it.body.position.y - it.h / 2,
+          rotation: (it.body.angle * 180) / Math.PI,
+        });
+        tl.to(
+          it.el,
+          { x: it.homeX, y: it.homeY, rotation: 0, duration: 0.8, ease: "power3.inOut" },
+          i * 0.03
+        );
+      });
     };
   }
 
