@@ -7,7 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import type { Project } from "@/data/projects";
-import { prefersReducedMotion } from "@/lib/utils";
+import { isTouchDevice, prefersReducedMotion } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -20,7 +20,13 @@ export default function WorkGallery({ projects }: { projects: Project[] }) {
     () => {
       const trackEl = track.current;
       if (!trackEl) return;
-      if (prefersReducedMotion()) {
+      // On phones a pinned horizontal scroll hijacks the vertical gesture and
+      // feels stuck. Fall back to the clean vertical stack on touch/narrow.
+      if (
+        prefersReducedMotion() ||
+        isTouchDevice() ||
+        window.matchMedia("(max-width: 768px)").matches
+      ) {
         setAnimated(false);
         return;
       }
@@ -49,8 +55,8 @@ export default function WorkGallery({ projects }: { projects: Project[] }) {
       id="work"
       className={
         animated
-          ? "relative h-svh overflow-hidden"
-          : "relative px-5 py-20 md:px-10"
+          ? "relative h-svh overflow-hidden scroll-mt-20"
+          : "relative scroll-mt-20 px-5 py-20 md:px-10"
       }
     >
       <div
@@ -95,7 +101,7 @@ export default function WorkGallery({ projects }: { projects: Project[] }) {
             data-cursor
             className={
               animated
-                ? "group relative flex h-[72vh] w-[82vw] shrink-0 flex-col justify-end overflow-hidden md:h-[70vh] md:w-[34rem]"
+                ? "group relative flex h-[72svh] w-[82vw] shrink-0 flex-col justify-end overflow-hidden md:h-[70svh] md:w-[34rem]"
                 : "group relative flex aspect-[4/5] w-full flex-col justify-end overflow-hidden"
             }
           >
@@ -103,7 +109,8 @@ export default function WorkGallery({ projects }: { projects: Project[] }) {
               src={p.hero.src}
               alt={p.hero.alt}
               fill
-              sizes="(min-width: 768px) 34rem, 82vw"
+              priority={i === 0}
+              sizes="(min-width: 768px) 34rem, 100vw"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent" />

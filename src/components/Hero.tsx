@@ -73,7 +73,8 @@ export default function Hero() {
         className="relative flex flex-col justify-center will-change-transform"
       >
         <p data-hero-fade className="kicker invisible mb-7">
-          ( Dike Uche · UX designer × full stack builder )
+          ( Dike Uche · <span className="whitespace-nowrap">UX designer</span> ×{" "}
+          <span className="whitespace-nowrap">full stack builder</span> )
         </p>
 
         <PhysicsHeadline />

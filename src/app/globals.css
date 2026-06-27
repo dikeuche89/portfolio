@@ -108,6 +108,19 @@ body {
   80% { transform: translate(3%, 3%); }
 }
 
+/* ---------- touch targets ---------- */
+
+/* extends the tappable area to ~44px without changing layout or the underline */
+.tap-target {
+  position: relative;
+}
+
+.tap-target::before {
+  content: "";
+  position: absolute;
+  inset: -0.75rem -0.5rem;
+}
+
 /* ---------- links ---------- */
 
 .link-underline {

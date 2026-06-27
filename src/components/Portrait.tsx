@@ -84,7 +84,8 @@ export default function Portrait({ className }: { className?: string }) {
         };
       }
 
-      // mobile: tilt toward the device's gyroscope
+      // mobile: tilt toward the device's gyroscope, but only while the portrait
+      // is actually on screen (it sits below the fold) to save battery
       initGyro();
       let raf = 0;
       const tick = () => {
@@ -95,8 +96,18 @@ export default function Portrait({ className }: { className?: string }) {
         }
         raf = requestAnimationFrame(tick);
       };
-      raf = requestAnimationFrame(tick);
-      return () => cancelAnimationFrame(raf);
+      const io = new IntersectionObserver(([e]) => {
+        if (e.isIntersecting && !raf) raf = requestAnimationFrame(tick);
+        else if (!e.isIntersecting && raf) {
+          cancelAnimationFrame(raf);
+          raf = 0;
+        }
+      });
+      if (wrap.current) io.observe(wrap.current);
+      return () => {
+        if (raf) cancelAnimationFrame(raf);
+        io.disconnect();
+      };
     },
     { scope: wrap }
   );
@@ -109,10 +120,10 @@ export default function Portrait({ className }: { className?: string }) {
         className="pointer-events-none absolute left-1/2 top-1/2 h-[55%] w-[55%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-[90px]"
         style={{ background: "radial-gradient(circle, #ff4d24 0%, transparent 70%)" }}
       />
-      {/* soft contact shadow grounding the figure */}
+      {/* soft contact shadow grounding the figure (tucked under the cutout, not splaying wider) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-[14%] bottom-[3%] h-[8%] rounded-[50%] bg-black/70 blur-2xl"
+        className="pointer-events-none absolute inset-x-[28%] bottom-[3%] h-[7%] rounded-[50%] bg-black/70 blur-2xl"
       />
       <div
         ref={inner}

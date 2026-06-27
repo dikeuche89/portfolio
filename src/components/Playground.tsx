@@ -99,38 +99,46 @@ export default function Playground() {
       </div>
 
       {/* control panel */}
-      <div ref={wrapRef} className="fixed bottom-4 left-4 z-[140] md:bottom-6 md:left-6">
+      <div
+        ref={wrapRef}
+        className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-[calc(1rem+env(safe-area-inset-left))] z-[140] md:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] md:left-[calc(1.5rem+env(safe-area-inset-left))]"
+      >
         <div
           className={cn(
             "mb-2 origin-bottom-left overflow-hidden rounded-xl border border-line bg-bg/85 backdrop-blur transition-all duration-300",
-            open ? "max-h-72 opacity-100" : "pointer-events-none max-h-0 opacity-0"
+            open ? "max-h-96 opacity-100" : "pointer-events-none max-h-0 opacity-0"
           )}
         >
-          <div className="w-56 p-4">
-            <p className="kicker mb-3">Accent</p>
-            <div className="flex flex-wrap gap-2.5">
+          <div className="w-60 p-4">
+            <p className="kicker mb-2">Accent</p>
+            <div className="flex flex-wrap gap-1">
               {ACCENTS.map((a) => (
                 <button
                   key={a.hex}
                   type="button"
                   title={a.name}
+                  aria-label={a.name}
                   onClick={() => pickAccent(a.hex)}
-                  className={cn(
-                    "size-6 rounded-full transition-transform hover:scale-110",
-                    accent === a.hex && "ring-2 ring-fg ring-offset-2 ring-offset-bg"
-                  )}
-                  style={{ background: a.hex }}
-                />
+                  className="flex size-11 items-center justify-center rounded-full transition-transform hover:scale-110"
+                >
+                  <span
+                    className={cn(
+                      "size-6 rounded-full",
+                      accent === a.hex && "ring-2 ring-fg ring-offset-2 ring-offset-bg"
+                    )}
+                    style={{ background: a.hex }}
+                  />
+                </button>
               ))}
             </div>
 
-            <p className="kicker mb-3 mt-5">Mode</p>
+            <p className="kicker mb-2 mt-4">Mode</p>
             <div className="grid grid-cols-2 gap-1 rounded-lg border border-line p-1">
               <button
                 type="button"
                 onClick={() => blueprint && toggleBlueprint()}
                 className={cn(
-                  "rounded-md py-1.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] transition-colors",
+                  "rounded-md py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] transition-colors",
                   !blueprint ? "bg-fg text-bg" : "text-muted hover:text-fg"
                 )}
               >
@@ -140,7 +148,7 @@ export default function Playground() {
                 type="button"
                 onClick={() => !blueprint && toggleBlueprint()}
                 className={cn(
-                  "rounded-md py-1.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] transition-colors",
+                  "rounded-md py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] transition-colors",
                   blueprint ? "bg-fg text-bg" : "text-muted hover:text-fg"
                 )}
               >
@@ -151,7 +159,7 @@ export default function Playground() {
             <button
               type="button"
               onClick={shake}
-              className="mt-4 w-full rounded-lg border border-line py-2 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted transition-colors hover:border-fg hover:text-fg"
+              className="mt-3 w-full rounded-lg border border-line py-3 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted transition-colors hover:border-fg hover:text-fg"
             >
               {heroDown ? "Reset the hero ↑" : "Knock the hero over ↓"}
             </button>
@@ -162,7 +170,7 @@ export default function Playground() {
           type="button"
           onClick={() => setOpen((o) => !o)}
           aria-label="Open playground"
-          className="flex items-center gap-2 rounded-full border border-line bg-bg/85 px-3.5 py-2 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted backdrop-blur transition-colors hover:text-fg"
+          className="flex items-center gap-2 rounded-full border border-line bg-bg/85 px-4 py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted backdrop-blur transition-colors hover:text-fg"
         >
           <span
             className="size-2.5 rounded-full transition-transform"
