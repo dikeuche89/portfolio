@@ -4,11 +4,11 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { SplitText } from "gsap/SplitText";
 import HeroCanvas from "@/components/HeroCanvas";
+import PhysicsHeadline from "@/components/PhysicsHeadline";
 import { prefersReducedMotion } from "@/lib/utils";
 
-gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function Hero() {
   const scope = useRef<HTMLElement>(null);
@@ -18,27 +18,11 @@ export default function Hero() {
     () => {
       const fades = gsap.utils.toArray<HTMLElement>("[data-hero-fade]");
       if (prefersReducedMotion()) {
-        gsap.set(["[data-hero-line]", fades], { autoAlpha: 1 });
+        gsap.set(fades, { autoAlpha: 1 });
         return;
       }
 
-      // character-level masked intro
-      gsap.set("[data-hero-line]", { autoAlpha: 1 });
-      SplitText.create("[data-hero-line]", {
-        type: "lines,chars",
-        mask: "lines",
-        autoSplit: true,
-        onSplit: (self) =>
-          gsap.from(self.chars, {
-            yPercent: 130,
-            rotation: 4,
-            duration: 1.2,
-            stagger: { each: 0.025, from: "start" },
-            delay: 0.2,
-            ease: "power4.out",
-          }),
-      });
-
+      // headline intro is owned by PhysicsHeadline; fade in the rest
       gsap.fromTo(
         fades,
         { autoAlpha: 0, y: 18 },
@@ -92,16 +76,7 @@ export default function Hero() {
           ( Dike Uche · UX designer × full stack builder )
         </p>
 
-        <h1
-          className="display invisible text-[clamp(3.25rem,12.5vw,12.5rem)]"
-          data-hero-line
-        >
-          Design<span className="accent">,</span>
-          <br />
-          <span className="serif-italic">
-            engineered<span className="accent">.</span>
-          </span>
-        </h1>
+        <PhysicsHeadline />
 
         <div className="mt-10 flex flex-col gap-8 md:mt-14 md:flex-row md:items-end md:justify-between">
           <p
