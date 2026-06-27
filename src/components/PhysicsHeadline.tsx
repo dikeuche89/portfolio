@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Matter from "matter-js";
-import { prefersReducedMotion } from "@/lib/utils";
+import { isTouchDevice, prefersReducedMotion } from "@/lib/utils";
 
 gsap.registerPlugin(useGSAP);
 
@@ -72,8 +72,10 @@ export default function PhysicsHeadline() {
     const H = section.clientHeight;
 
     const overlay = document.createElement("div");
+    // pan-y (not none) so a vertical swipe still scrolls the page away from the
+    // knocked-over hero instead of trapping the visitor on it
     overlay.style.cssText =
-      "position:absolute;inset:0;z-index:70;overflow:hidden;touch-action:none;";
+      "position:absolute;inset:0;z-index:70;overflow:hidden;touch-action:pan-y;";
     section.appendChild(overlay);
 
     const engine = Engine.create();
@@ -182,12 +184,18 @@ export default function PhysicsHeadline() {
     };
   }
 
+  // On touch the headline fills the first screen, so a tap-to-knock-over would
+  // fire while scrolling. There, the toy is reached only via the Playground button.
+  const onHeadlineClick = () => {
+    if (!isTouchDevice()) toggle();
+  };
+
   return (
     <h1
       ref={root}
-      onClick={toggle}
+      onClick={onHeadlineClick}
       title="knock it over"
-      className="display invisible cursor-pointer select-none text-[clamp(3.25rem,12.5vw,12.5rem)]"
+      className="display invisible select-none text-[clamp(3.25rem,12.5vw,12.5rem)] [@media(hover:hover)]:cursor-pointer"
     >
       <span className="block overflow-hidden">
         {[...LINE1].map((c, i) => (

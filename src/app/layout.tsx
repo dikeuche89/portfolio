@@ -49,6 +49,9 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#0a0a0b",
+  colorScheme: "dark",
+  // expose env(safe-area-inset-*) so fixed chrome can clear the notch / home bar
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

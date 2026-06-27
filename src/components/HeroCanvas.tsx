@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { prefersReducedMotion } from "@/lib/utils";
+import { isTouchDevice, prefersReducedMotion } from "@/lib/utils";
 import { initGyro, getTilt } from "@/lib/gyro";
 
 const SPACING = 26;
@@ -32,16 +32,20 @@ export default function HeroCanvas({ accent = "#ff4d24" }: { accent?: string }) 
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    // phones: sparser grid + lower DPR so the per-frame canvas work stays light
+    const touch = isTouchDevice();
+    const spacing = touch ? 36 : SPACING;
+    const maxDpr = touch ? 1.5 : 2;
     if (prefersReducedMotion()) {
       // single static paint
       const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.fillStyle = "rgba(234,232,228,0.085)";
-      for (let y = SPACING / 2; y < rect.height; y += SPACING)
-        for (let x = SPACING / 2; x < rect.width; x += SPACING) {
+      for (let y = spacing / 2; y < rect.height; y += spacing)
+        for (let x = spacing / 2; x < rect.width; x += spacing) {
           ctx.beginPath();
           ctx.arc(x, y, 1, 0, Math.PI * 2);
           ctx.fill();
@@ -74,15 +78,15 @@ export default function HeroCanvas({ accent = "#ff4d24" }: { accent?: string }) 
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
       W = rect.width;
       H = rect.height;
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       dots = [];
-      for (let y = SPACING / 2; y < H; y += SPACING)
-        for (let x = SPACING / 2; x < W; x += SPACING) dots.push({ x, y });
+      for (let y = spacing / 2; y < H; y += spacing)
+        for (let x = spacing / 2; x < W; x += spacing) dots.push({ x, y });
     };
 
     const draw = () => {

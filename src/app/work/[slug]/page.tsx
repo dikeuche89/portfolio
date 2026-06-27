@@ -317,7 +317,10 @@ export default async function ProjectPage({
               ["Year", project.year],
               ["Tools", project.tools.join(", ")],
             ].map(([label, value]) => (
-              <div key={label} className="pr-6">
+              <div
+                key={label}
+                className={`pr-6 ${label === "Tools" ? "col-span-2 md:col-span-1" : ""}`}
+              >
                 <dt className="kicker mb-2.5">{label}</dt>
                 <dd className="text-sm leading-relaxed">{value}</dd>
               </div>

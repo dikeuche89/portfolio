@@ -38,7 +38,7 @@ export default function Footer() {
 
   return (
     <footer ref={scope} id="contact" className="relative mt-28 md:mt-40">
-      <div className="border-t border-line px-5 pt-16 md:px-10 md:pt-24">
+      <div className="border-t border-line px-[max(1.25rem,env(safe-area-inset-left))] pb-[env(safe-area-inset-bottom)] pt-16 md:px-10 md:pt-24">
         <Reveal>
           <p className="kicker">( Got an idea? )</p>
         </Reveal>
@@ -58,14 +58,14 @@ export default function Footer() {
         </Reveal>
 
         <div className="mt-14 flex flex-wrap items-center gap-x-10 gap-y-4 font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-muted md:mt-20">
-          <a href={`mailto:${site.email}`} className="link-underline hover:text-accent">
+          <a href={`mailto:${site.email}`} className="link-underline tap-target hover:text-accent">
             {site.email}
           </a>
           <a
             href={site.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="link-underline hover:text-accent"
+            className="link-underline tap-target hover:text-accent"
           >
             LinkedIn ↗
           </a>
@@ -87,7 +87,7 @@ export default function Footer() {
             <button
               type="button"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="link-underline px-2 py-1 uppercase tracking-[0.18em]"
+              className="link-underline tap-target px-2 py-1 uppercase tracking-[0.18em]"
             >
               Back to top ↑
             </button>

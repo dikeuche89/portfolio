@@ -4,13 +4,14 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { prefersReducedMotion } from "@/lib/utils";
+import { isTouchDevice, prefersReducedMotion } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll() {
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    // keep native momentum scrolling on phones; only smooth on desktop pointers
+    if (prefersReducedMotion() || isTouchDevice()) return;
 
     const lenis = new Lenis({
       duration: 1.1,

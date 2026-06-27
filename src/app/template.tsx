@@ -4,7 +4,7 @@ import { useRef, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { prefersReducedMotion } from "@/lib/utils";
+import { isTouchDevice, prefersReducedMotion } from "@/lib/utils";
 
 gsap.registerPlugin(useGSAP);
 
@@ -44,30 +44,31 @@ export default function Template({ children }: { children: ReactNode }) {
       return;
     }
 
-    // navigation: cinematic wipe with the route label
+    // navigation: cinematic wipe with the route label (quicker on phones)
+    const d = isTouchDevice() ? 0.62 : 1;
     gsap
       .timeline()
       .set(content.current, { autoAlpha: 0 })
       .fromTo(
         label.current,
         { yPercent: 60, autoAlpha: 0 },
-        { yPercent: 0, autoAlpha: 1, duration: 0.45, ease: "power3.out" }
+        { yPercent: 0, autoAlpha: 1, duration: 0.45 * d, ease: "power3.out" }
       )
       .to(
         label.current,
-        { yPercent: -60, autoAlpha: 0, duration: 0.45, ease: "power3.in" },
+        { yPercent: -60, autoAlpha: 0, duration: 0.45 * d, ease: "power3.in" },
         "+=0.12"
       )
       .to(
         overlay.current,
-        { yPercent: -100, duration: 0.75, ease: "power4.inOut" },
+        { yPercent: -100, duration: 0.75 * d, ease: "power4.inOut" },
         "-=0.12"
       )
       .set(content.current, { autoAlpha: 1 }, "-=0.55")
       .fromTo(
         content.current,
         { y: 18 },
-        { y: 0, duration: 0.6, ease: "power2.out", clearProps: "all" },
+        { y: 0, duration: 0.6 * d, ease: "power2.out", clearProps: "all" },
         "<"
       )
       .set(overlay.current, { display: "none" });
