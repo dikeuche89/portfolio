@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const ACCENTS = [
@@ -18,6 +18,7 @@ export default function Playground() {
   const [accent, setAccent] = useState(DEFAULT);
   const [blueprint, setBlueprint] = useState(false);
   const [heroDown, setHeroDown] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
 
   // set the accent token and let canvas-based bits (e.g. the hero dots) follow along
   const applyAccent = (hex: string) => {
@@ -52,6 +53,23 @@ export default function Playground() {
     setBlueprint(next);
   };
 
+  // close the panel when tapping/clicking away, or on Escape
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: PointerEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   // keep the button label in sync with whether the hero is currently knocked over
   useEffect(() => {
     const onHero = (e: Event) =>
@@ -81,7 +99,7 @@ export default function Playground() {
       </div>
 
       {/* control panel */}
-      <div className="fixed bottom-4 left-4 z-[140] md:bottom-6 md:left-6">
+      <div ref={wrapRef} className="fixed bottom-4 left-4 z-[140] md:bottom-6 md:left-6">
         <div
           className={cn(
             "mb-2 origin-bottom-left overflow-hidden rounded-xl border border-line bg-bg/85 backdrop-blur transition-all duration-300",
