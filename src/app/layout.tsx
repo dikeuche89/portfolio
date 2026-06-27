@@ -6,6 +6,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import Playground from "@/components/Playground";
 import { site } from "@/data/projects";
 
 const archivo = Archivo({
@@ -67,6 +68,7 @@ export default function RootLayout({
         <Nav />
         <main>{children}</main>
         <Footer />
+        <Playground />
       </body>
     </html>
   );

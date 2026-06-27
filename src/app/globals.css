@@ -133,6 +133,52 @@ body {
   transform-origin: left;
 }
 
+/* ---------- blueprint mode ---------- */
+
+.bp-overlay {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s ease;
+}
+
+.blueprint .bp-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.bp-grid {
+  background-image:
+    linear-gradient(to right, rgba(234, 232, 228, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(234, 232, 228, 0.035) 1px, transparent 1px);
+  background-size:
+    calc(100% / 12) 100%,
+    100% 6rem;
+}
+
+.bp-note {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+/* outline the real structure so the build reads through the design */
+.blueprint main section,
+.blueprint header nav,
+.blueprint footer > div,
+.blueprint figure,
+.blueprint img {
+  outline: 1px dashed rgba(234, 232, 228, 0.28);
+  outline-offset: -1px;
+}
+
+.blueprint img {
+  opacity: 0.5;
+}
+
 /* ---------- work list hover dimming ---------- */
 
 @media (hover: hover) and (pointer: fine) {
