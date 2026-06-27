@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
     default: site.title,
-    template: "%s — Dike Uche",
+    template: "%s · Dike Uche",
   },
   description: site.description,
   openGraph: {

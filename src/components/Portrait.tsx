@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { cn, prefersReducedMotion } from "@/lib/utils";
+import { initGyro, getTilt } from "@/lib/gyro";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -15,7 +16,7 @@ const TEX_H = 1600;
 
 /**
  * Still cutout with the site's signature reveal: a bottom-up clip-path wipe
- * with a scale settle on enter, a gentle scroll-parallax drift, and a subtle
+ * with a scale settle on enter, a gentle scroll parallax drift, and a subtle
  * (≤3°) tilt toward the cursor. No WebGL.
  */
 export default function Portrait({ className }: { className?: string }) {
@@ -42,7 +43,7 @@ export default function Portrait({ className }: { className?: string }) {
         .to(clip.current, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4 })
         .to(img.current, { scale: 1, duration: 1.6 }, 0);
 
-      // 2) gentle scroll-parallax drift — the figure floats as you scroll
+      // 2) gentle scroll parallax drift, the figure floats as you scroll
       gsap.fromTo(
         inner.current,
         { yPercent: -4 },
@@ -58,11 +59,12 @@ export default function Portrait({ className }: { className?: string }) {
         }
       );
 
-      // 3) subtle cursor tilt (≤3°), desktop only
+      // 3) subtle tilt (≤4°), cursor on desktop, device gyroscope on mobile
+      const rotX = gsap.quickTo(inner.current, "rotationX", { duration: 0.6, ease: "power3" });
+      const rotY = gsap.quickTo(inner.current, "rotationY", { duration: 0.6, ease: "power3" });
+      const clamp = gsap.utils.clamp(-4, 4);
+
       if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-        const rotX = gsap.quickTo(inner.current, "rotationX", { duration: 0.6, ease: "power3" });
-        const rotY = gsap.quickTo(inner.current, "rotationY", { duration: 0.6, ease: "power3" });
-        const clamp = gsap.utils.clamp(-3, 3);
         const onMove = (e: MouseEvent) => {
           const r = wrap.current!.getBoundingClientRect();
           const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
@@ -81,6 +83,20 @@ export default function Portrait({ className }: { className?: string }) {
           wrap.current?.removeEventListener("mouseleave", onLeave);
         };
       }
+
+      // mobile: tilt toward the device's gyroscope
+      initGyro();
+      let raf = 0;
+      const tick = () => {
+        const tilt = getTilt();
+        if (tilt.active) {
+          rotY(clamp(tilt.x * 4));
+          rotX(clamp(tilt.y * 4));
+        }
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(raf);
     },
     { scope: wrap }
   );

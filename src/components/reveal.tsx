@@ -52,7 +52,7 @@ export function Reveal({
   );
 }
 
-/** Masked reveal for headlines — line-by-line, or char-by-char for big titles. */
+/** Masked reveal for headlines: line by line, or char by char for big titles. */
 export function SplitReveal({
   children,
   className,
@@ -107,7 +107,7 @@ export function SplitReveal({
   );
 }
 
-/** Word-by-word opacity scrub tied to scroll — for manifesto paragraphs. */
+/** Word by word opacity scrub tied to scroll, for manifesto paragraphs. */
 export function WordScrub({
   children,
   className,
@@ -150,7 +150,7 @@ export function WordScrub({
   );
 }
 
-/** Bottom-up clip-path wipe with a scale settle — for figures and images. */
+/** Bottom up clip path wipe with a scale settle, for figures and images. */
 export function ClipReveal({
   children,
   className,
