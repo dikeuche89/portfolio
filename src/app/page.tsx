@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
-import WorkList from "@/components/WorkList";
+import WorkGallery from "@/components/WorkGallery";
 import Portrait from "@/components/Portrait";
 import { Reveal, SplitReveal, WordScrub } from "@/components/reveal";
 import { projects } from "@/data/projects";
@@ -58,18 +58,8 @@ export default function Home() {
         className="mt-6"
       />
 
-      {/* selected work */}
-      <section id="work" className="scroll-mt-24 px-5 pt-24 md:px-10 md:pt-36">
-        <div className="mb-10 flex items-end justify-between md:mb-14">
-          <Reveal>
-            <p className="kicker">( 01 — Selected work )</p>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="kicker">2020 — 2026</p>
-          </Reveal>
-        </div>
-        <WorkList projects={projects} />
-      </section>
+      {/* selected work — horizontal scroll gallery */}
+      <WorkGallery projects={projects} />
 
       {/* manifesto */}
       <section className="px-5 pt-28 md:px-10 md:pt-44">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ParallaxImage from "@/components/ParallaxImage";
 import ScrollProgress from "@/components/ScrollProgress";
+import CountUp from "@/components/CountUp";
 import { ClipReveal, Reveal, SplitReveal } from "@/components/reveal";
 import {
   getProject,
@@ -121,7 +122,7 @@ function CaseBlock({ block, accent }: { block: Block; accent: string }) {
                   className="display text-[clamp(1.75rem,3vw,2.5rem)]"
                   style={{ color: accent }}
                 >
-                  {stat.value}
+                  <CountUp>{stat.value}</CountUp>
                 </p>
                 <p className="kicker mt-3 normal-case tracking-[0.08em]">{stat.label}</p>
               </div>
@@ -384,7 +385,7 @@ export default async function ProjectPage({
                     className="display text-[clamp(2rem,4vw,3.25rem)]"
                     style={{ color: project.accent }}
                   >
-                    {stat.value}
+                    <CountUp>{stat.value}</CountUp>
                   </p>
                   <p className="kicker mt-4 normal-case tracking-[0.08em]">{stat.label}</p>
                 </Reveal>
