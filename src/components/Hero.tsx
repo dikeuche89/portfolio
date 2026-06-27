@@ -98,15 +98,9 @@ export default function Hero() {
 
         <div
           data-hero-fade
-          className="invisible mt-10 grid grid-cols-2 gap-4 border-t border-line pt-5 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted md:grid-cols-4"
+          className="invisible mt-10 border-t border-line pt-5 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted"
         >
-          <span>Based · Remote</span>
-          <span>Currently · Cofounder @ Kiphar</span>
-          <span className="hidden md:block">Focus · Design × Code</span>
-          <span className="flex items-center justify-end gap-2 text-right">
-            <span className="pulse-dot" aria-hidden />
-            Open to work
-          </span>
+          Focus · Design × Code
         </div>
       </div>
     </section>

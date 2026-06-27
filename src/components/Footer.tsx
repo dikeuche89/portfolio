@@ -69,10 +69,6 @@ export default function Footer() {
           >
             LinkedIn ↗
           </a>
-          <span className="flex items-center gap-2">
-            <span className="pulse-dot" aria-hidden />
-            Open to work
-          </span>
         </div>
 
         <div className="overflow-hidden">
