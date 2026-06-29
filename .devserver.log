@@ -1,0 +1,16 @@
+
+> portfolio@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.0.0.209:3000
+✓ Ready in 439ms
+
+(node:61185) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ GET / 200 in 2.7s (next.js: 2.4s, application-code: 289ms)
+ GET / 200 in 71ms (next.js: 12ms, application-code: 59ms)
+ POST /api/chat 503 in 614ms (next.js: 605ms, application-code: 9ms)
+ POST /api/chat 503 in 4ms (next.js: 2ms, application-code: 2ms)
+ GET / 200 in 166ms (next.js: 49ms, application-code: 117ms)
