@@ -3,6 +3,8 @@ import {
   streamText,
   convertToModelMessages,
   isTextUIPart,
+  type StreamTextTransform,
+  type ToolSet,
   type UIMessage,
 } from "ai";
 import { buildSystemPrompt } from "@/lib/knowledge";
@@ -10,6 +12,22 @@ import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
+
+// Belt-and-braces: the model is told not to, but Haiku still slips em dashes in
+// occasionally, and Dike doesn't want them. Strip them as the text streams.
+const stripDashes: StreamTextTransform<ToolSet> = () =>
+  new TransformStream({
+    transform(chunk, controller) {
+      if (chunk.type === "text-delta") {
+        controller.enqueue({
+          ...chunk,
+          text: chunk.text.replace(/\s*—\s*/g, ", ").replace(/–/g, "-"),
+        });
+      } else {
+        controller.enqueue(chunk);
+      }
+    },
+  });
 
 const MAX_MESSAGES = 24; // cap the conversation we'll forward
 const MAX_CHARS = 1500; // cap a single user turn
@@ -63,6 +81,7 @@ export async function POST(req: Request) {
     messages: await convertToModelMessages(messages),
     maxOutputTokens: 700,
     temperature: 0.5,
+    experimental_transform: stripDashes,
   });
 
   return result.toUIMessageStreamResponse();
