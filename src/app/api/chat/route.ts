@@ -84,5 +84,14 @@ export async function POST(req: Request) {
     experimental_transform: stripDashes,
   });
 
-  return result.toUIMessageStreamResponse();
+  return result.toUIMessageStreamResponse({
+    onError: (error) => {
+      const msg = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
+      console.error("[chat] stream error:", msg);
+      if (/api[\s_-]?key|x-api-key|401|unauthor|authentication|invalid_request|permission|forbidden|model/i.test(msg)) {
+        return "The assistant isn't set up correctly right now. Please email dikeuche3@gmail.com and Dike will take a look.";
+      }
+      return "Something went wrong on my end. Mind trying that again in a moment?";
+    },
+  });
 }
