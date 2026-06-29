@@ -164,7 +164,9 @@ export default function AskDike() {
             onChange={(e) => setInput(e.target.value)}
             maxLength={1500}
             placeholder="Ask about Dike..."
-            className="min-w-0 flex-1 bg-transparent text-sm text-fg placeholder:text-muted focus:outline-none"
+            /* text-base (16px) is required: iOS Safari auto-zooms into any input
+               with a smaller font, which widens the page and causes horizontal scroll */
+            className="min-w-0 flex-1 bg-transparent text-base text-fg placeholder:text-muted focus:outline-none"
           />
           <button
             type="submit"
