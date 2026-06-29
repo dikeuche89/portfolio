@@ -17,6 +17,8 @@ const SUGGESTIONS = [
 export default function AskDike() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [kb, setKb] = useState(0); // on-screen keyboard overlap, px
+  const [vvh, setVvh] = useState(0); // visible (visual viewport) height, px
   const { messages, sendMessage, status, error } = useChat({ transport });
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -33,6 +35,25 @@ export default function AskDike() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, status]);
 
+  // On mobile the keyboard overlays the page, hiding the input. Track the visual
+  // viewport and lift the panel above the keyboard so typing stays visible.
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      const overlap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      setKb(open ? overlap : 0);
+      setVvh(vv.height);
+    };
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+    };
+  }, [open]);
+
   const submit = (text: string) => {
     const t = text.trim();
     if (!t || busy) return;
@@ -41,13 +62,17 @@ export default function AskDike() {
   };
 
   return (
-    <div className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-[140] flex flex-col items-end md:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] md:right-[calc(1.5rem+env(safe-area-inset-right))]">
+    <div
+      style={kb ? { transform: `translateY(-${kb}px)` } : undefined}
+      className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-[140] flex flex-col items-end transition-transform duration-200 ease-out md:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] md:right-[calc(1.5rem+env(safe-area-inset-right))]"
+    >
       {/* panel */}
       <div
+        style={kb && vvh ? { maxHeight: `${Math.max(220, vvh - 96)}px` } : undefined}
         className={cn(
-          "mb-3 flex w-[min(22rem,calc(100vw-2rem))] origin-bottom-right flex-col overflow-hidden rounded-2xl border border-line bg-bg/95 backdrop-blur-xl transition-all duration-300",
+          "mb-3 flex w-[min(22rem,calc(100vw-1.5rem))] origin-bottom-right flex-col overflow-hidden rounded-2xl border border-line bg-bg/95 backdrop-blur-xl transition-all duration-300",
           open
-            ? "pointer-events-auto h-[min(30rem,70vh)] opacity-100"
+            ? "pointer-events-auto h-[min(30rem,70svh)] opacity-100"
             : "pointer-events-none h-0 translate-y-3 opacity-0"
         )}
       >
@@ -68,7 +93,10 @@ export default function AskDike() {
         </div>
 
         {/* messages */}
-        <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
+        <div
+          ref={scrollRef}
+          className="flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-4 py-4"
+        >
           {messages.length === 0 && (
             <div className="space-y-4">
               <p className="text-sm leading-relaxed text-muted">
@@ -99,10 +127,8 @@ export default function AskDike() {
               <div key={m.id} className={cn("flex", isUser ? "justify-end" : "justify-start")}>
                 <div
                   className={cn(
-                    "max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
-                    isUser
-                      ? "bg-fg text-bg"
-                      : "border border-line bg-bg text-fg/90"
+                    "min-w-0 max-w-[85%] whitespace-pre-wrap break-words [overflow-wrap:anywhere] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
+                    isUser ? "bg-fg text-bg" : "border border-line bg-bg text-fg/90"
                   )}
                 >
                   {text || (
