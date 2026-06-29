@@ -16,6 +16,10 @@ html {
   background: var(--color-bg);
   scrollbar-width: thin;
   scrollbar-color: rgba(234, 232, 228, 0.25) transparent;
+  /* clip at the root too: fixed-position chrome (the chat widget) clips against
+     the root, not body, so this stops it from ever causing horizontal scroll on
+     mobile. clip (not hidden) keeps sticky / ScrollTrigger pinning intact. */
+  overflow-x: clip;
 }
 
 body {
