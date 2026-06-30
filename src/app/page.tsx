@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import WorkGallery from "@/components/WorkGallery";
 import Portrait from "@/components/Portrait";
+import Testimonials from "@/components/Testimonials";
 import { Reveal, SplitReveal, WordScrub } from "@/components/reveal";
 import { projects } from "@/data/projects";
 
@@ -132,26 +133,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* testimonial */}
-      <section className="px-5 pt-28 md:px-10 md:pt-44">
-        <Reveal>
-          <p className="kicker mb-10">( 05 · Word on the street )</p>
-        </Reveal>
-        <SplitReveal
-          as="blockquote"
-          className="serif-italic max-w-5xl text-[clamp(1.5rem,3.6vw,3rem)] leading-[1.2]"
-        >
-          “Dike&apos;s design style is both modern and visually appealing. He has an
-          intuitive knack for creating designs that are not only functional but
-          also aesthetically pleasing. His work showcases a contemporary design
-          language that is sure to resonate with users and clients alike.”
-        </SplitReveal>
-        <Reveal delay={0.15}>
-          <p className="kicker mt-10">
-            Daniel Eordogh, SVP of Product & Technology at LeoVegas Group
-          </p>
-        </Reveal>
-      </section>
+      {/* testimonials */}
+      <Testimonials />
     </>
   );
 }
