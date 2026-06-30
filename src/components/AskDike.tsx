@@ -140,6 +140,9 @@ export default function AskDike() {
         {/* messages */}
         <div
           ref={scrollRef}
+          // let the mouse wheel scroll this list natively instead of Lenis
+          // smooth-scrolling the page behind it (desktop)
+          data-lenis-prevent
           className="flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-5 py-5 md:px-4 md:py-4"
         >
           {messages.length === 0 && (
