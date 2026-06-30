@@ -31,7 +31,7 @@ const capabilities = [
   },
   {
     title: "Full Stack Build",
-    blurb: "From Figma to production. I ship what I design.",
+    blurb: "I ship what I design, all the way from Figma to production.",
     items: [
       "React & Next.js",
       "TypeScript",
@@ -67,9 +67,9 @@ export default function Home() {
           <p className="kicker mb-8">( 02 · The point )</p>
         </Reveal>
         <WordScrub className="display max-w-6xl text-[clamp(1.75rem,4.5vw,4rem)] font-bold normal-case leading-[1.05]">
-          Most designers stop at handoff. I keep going. Through the components,
-          the edge cases, the deploy. Because design that ships is the only kind
-          that counts.
+          Most designers stop at handoff. I keep going, through the components,
+          the edge cases, and the deploy, because design that ships is the only
+          kind that counts.
         </WordScrub>
         <Reveal delay={0.15} className="mt-10">
           <Link
@@ -118,9 +118,9 @@ export default function Home() {
           </SplitReveal>
           <Reveal delay={0.15}>
             <p className="mt-8 max-w-md leading-relaxed text-muted">
-              I design and build digital products from idea to launch. Product
-              thinking, UX craft, and a healthy dose of AI in the workflow.
-              Figma to production code, and everything in between.
+              I design and build digital products from idea to launch, bringing
+              product thinking, UX craft, and a healthy dose of AI to the
+              workflow, from Figma to production code and everything in between.
             </p>
             <Link
               href="/about"

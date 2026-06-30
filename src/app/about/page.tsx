@@ -175,8 +175,9 @@ export default function AboutPage() {
             <p className="kicker mb-8">( Off the clock )</p>
           </Reveal>
           <WordScrub className="display max-w-xl text-[clamp(1.6rem,3.6vw,3rem)] font-bold normal-case leading-[1.08]">
-            Hiking trails, behind a camera, in the kitchen, or watching soccer.
-            And mentoring junior designers making the same jump I did.
+            You&apos;ll usually find me on hiking trails, behind a camera, in the
+            kitchen, or watching soccer, and mentoring junior designers making
+            the same jump I did.
           </WordScrub>
           <Reveal delay={0.1}>
             <a
