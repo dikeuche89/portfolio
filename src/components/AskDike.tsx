@@ -194,10 +194,10 @@ export default function AskDike() {
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Ask about Dike"}
         className={cn(
-          "flex items-center gap-2 rounded-full border bg-bg/85 px-4 py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] backdrop-blur transition-colors",
+          "flex items-center gap-2 rounded-full border px-4 py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] backdrop-blur transition-colors",
           open
             ? "border-accent bg-accent text-bg"
-            : "border-line text-muted hover:text-fg"
+            : "border-line bg-bg/85 text-muted hover:text-fg"
         )}
       >
         <Sparkle className={cn("size-3.5", open ? "text-bg" : "text-accent")} />
