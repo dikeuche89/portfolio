@@ -23,45 +23,78 @@ function Sparkle({ className }: { className?: string }) {
   );
 }
 
+function ChevronDown({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className={className}
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
+
 export default function AskDike() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
-  const [kb, setKb] = useState(0); // on-screen keyboard overlap, px
-  const [vvh, setVvh] = useState(0); // visible (visual viewport) height, px
+  const [isMobile, setIsMobile] = useState(false);
+  const [vv, setVv] = useState<{ h: number; top: number } | null>(null);
   const { messages, sendMessage, status, error } = useChat({ transport });
 
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const busy = status === "submitted" || status === "streaming";
 
-  // focus the field when the panel opens
+  // track the breakpoint (mobile = full-screen sheet, desktop = floating panel)
   useEffect(() => {
-    if (open) inputRef.current?.focus();
-  }, [open]);
+    const mq = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  // track the visual viewport so the full-screen sheet sizes to the area above
+  // the on-screen keyboard (keeping the input visible)
+  useEffect(() => {
+    const v = window.visualViewport;
+    if (!v) return;
+    const update = () => setVv({ h: v.height, top: v.offsetTop });
+    update();
+    v.addEventListener("resize", update);
+    v.addEventListener("scroll", update);
+    return () => {
+      v.removeEventListener("resize", update);
+      v.removeEventListener("scroll", update);
+    };
+  }, []);
+
+  // desktop: focus the field on open. On mobile we let the visitor read the
+  // suggestions first instead of slamming the keyboard up.
+  useEffect(() => {
+    if (open && !isMobile) inputRef.current?.focus();
+  }, [open, isMobile]);
+
+  // lock background scroll while the full-screen sheet is open
+  useEffect(() => {
+    if (!open || !isMobile) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open, isMobile]);
 
   // keep the latest message in view as it streams in
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, status]);
-
-  // On mobile the keyboard overlays the page, hiding the input. Track the visual
-  // viewport and lift the panel above the keyboard so typing stays visible.
-  useEffect(() => {
-    const vv = window.visualViewport;
-    if (!vv) return;
-    const update = () => {
-      const overlap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-      setKb(open ? overlap : 0);
-      setVvh(vv.height);
-    };
-    update();
-    vv.addEventListener("resize", update);
-    vv.addEventListener("scroll", update);
-    return () => {
-      vv.removeEventListener("resize", update);
-      vv.removeEventListener("scroll", update);
-    };
-  }, [open]);
 
   const submit = (text: string) => {
     const t = text.trim();
@@ -70,45 +103,48 @@ export default function AskDike() {
     setInput("");
   };
 
+  // on mobile, size the sheet to the visible viewport (above the keyboard)
+  const panelStyle =
+    open && isMobile && vv ? { height: `${vv.h}px`, top: `${vv.top}px` } : undefined;
+
   return (
-    <div
-      style={kb ? { transform: `translateY(-${kb}px)` } : undefined}
-      className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-[140] flex flex-col items-end transition-transform duration-200 ease-out md:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] md:right-[calc(1.5rem+env(safe-area-inset-right))]"
-    >
-      {/* panel */}
+    <>
+      {/* panel: full-screen opaque sheet on mobile, floating card on desktop */}
       <div
-        style={kb && vvh ? { maxHeight: `${Math.max(220, vvh - 96)}px` } : undefined}
+        style={panelStyle}
+        aria-hidden={!open}
         className={cn(
-          "mb-3 flex w-[min(22rem,calc(100vw-1.5rem))] origin-bottom-right flex-col overflow-hidden rounded-2xl border border-line bg-bg/95 backdrop-blur-xl transition-all duration-300",
+          "fixed inset-x-0 top-0 z-[160] flex h-[100svh] flex-col bg-bg transition-[opacity,transform] duration-300",
+          "md:inset-auto md:bottom-24 md:right-6 md:h-[min(30rem,70svh)] md:w-[22rem] md:origin-bottom-right md:rounded-2xl md:border md:border-line md:bg-bg/95 md:backdrop-blur-xl",
           open
-            ? "pointer-events-auto h-[min(30rem,70svh)] opacity-100"
-            : "pointer-events-none h-0 translate-y-3 opacity-0"
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none translate-y-3 opacity-0"
         )}
       >
         {/* header */}
-        <div className="flex items-center justify-between border-b border-line px-4 py-3">
-          <span className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">
-            <Sparkle className="size-3.5 text-accent" />
+        <div className="flex items-center justify-between border-b border-line px-5 py-4 md:px-4 md:py-3">
+          <span className="flex items-center gap-2 font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-muted md:text-[0.625rem]">
+            <Sparkle className="size-4 text-accent md:size-3.5" />
             Ask about Dike
           </span>
           <button
             type="button"
             onClick={() => setOpen(false)}
-            aria-label="Close chat"
-            className="-m-1 p-1 text-base leading-none text-accent transition-opacity hover:opacity-70"
+            aria-label="Collapse chat"
+            className="flex size-9 items-center justify-center rounded-full border border-line text-accent transition-colors hover:border-accent md:size-8"
           >
-            ✕
+            <ChevronDown className="size-5 md:size-4" />
           </button>
         </div>
 
         {/* messages */}
         <div
           ref={scrollRef}
-          className="flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-4 py-4"
+          className="flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-5 py-5 md:px-4 md:py-4"
         >
           {messages.length === 0 && (
             <div className="space-y-4">
-              <p className="text-sm leading-relaxed text-muted">
+              <p className="text-base leading-relaxed text-muted md:text-sm">
                 Hey, I&apos;m Dike&apos;s assistant. Ask me anything about his work,
                 background, or how to reach him.
               </p>
@@ -136,7 +172,7 @@ export default function AskDike() {
               <div key={m.id} className={cn("flex", isUser ? "justify-end" : "justify-start")}>
                 <div
                   className={cn(
-                    "min-w-0 max-w-[85%] whitespace-pre-wrap break-words [overflow-wrap:anywhere] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
+                    "min-w-0 max-w-[85%] whitespace-pre-wrap break-words [overflow-wrap:anywhere] rounded-2xl px-3.5 py-2.5 text-base leading-relaxed md:text-sm",
                     isUser ? "bg-fg text-bg" : "border border-line bg-bg text-fg/90"
                   )}
                 >
@@ -165,7 +201,7 @@ export default function AskDike() {
             e.preventDefault();
             submit(input);
           }}
-          className="flex items-center gap-2 border-t border-line p-3"
+          className="flex items-center gap-2 border-t border-line p-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:p-3 md:pb-3"
         >
           <input
             ref={inputRef}
@@ -188,13 +224,13 @@ export default function AskDike() {
         </form>
       </div>
 
-      {/* launcher */}
+      {/* launcher (hidden behind the full-screen sheet on mobile when open) */}
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        aria-label={open ? "Close chat" : "Ask about Dike"}
+        aria-label={open ? "Collapse chat" : "Ask about Dike"}
         className={cn(
-          "flex items-center gap-2 rounded-full border px-4 py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] backdrop-blur transition-colors",
+          "fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-[140] flex items-center gap-2 rounded-full border px-4 py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] backdrop-blur transition-colors md:bottom-6 md:right-6",
           open
             ? "border-accent bg-accent text-bg"
             : "border-line bg-bg/85 text-muted hover:text-fg"
@@ -203,6 +239,6 @@ export default function AskDike() {
         <Sparkle className={cn("size-3.5", open ? "text-bg" : "text-accent")} />
         {open ? "Close" : "Ask about Dike"}
       </button>
-    </div>
+    </>
   );
 }
