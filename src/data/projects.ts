@@ -513,7 +513,7 @@ export const projects: Project[] = [
     accent: "#18a999",
     intro: [
       "CST Foundation has helped Canadian families save for college since 1960, more than 600,000 families so far. I came on to design the mobile experience for their college savings product.",
-      "Starting from a design system I set up for the team, I designed an onboarding flow of more than 35 screens that takes students and parents from first open to a set up plan, tested with real users along the way.",
+      "Starting from a design system I set up for the team, I designed an onboarding flow of more than 35 screens that takes students and parents from first open to setting up their plan, tested with real users along the way.",
     ],
     note: "Most of this work is covered by IP agreements, so I can only show approved material here. Happy to walk you through the whole thing in a conversation.",
     tools: ["Figma", "Design system", "Wireframing", "Usability testing"],
