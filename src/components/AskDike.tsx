@@ -14,6 +14,15 @@ const SUGGESTIONS = [
   "Is he open to work?",
 ];
 
+function Sparkle({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M12 2.25l1.75 6 6 1.75-6 1.75L12 17.75l-1.75-6-6-1.75 6-1.75L12 2.25z" />
+      <path d="M19 13.5l.9 2.85 2.85.9-2.85.9L19 21l-.9-2.85L15.25 17.25l2.85-.9L19 13.5z" />
+    </svg>
+  );
+}
+
 export default function AskDike() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -79,14 +88,14 @@ export default function AskDike() {
         {/* header */}
         <div className="flex items-center justify-between border-b border-line px-4 py-3">
           <span className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted">
-            <span className="pulse-dot" aria-hidden />
+            <Sparkle className="size-3.5 text-accent" />
             Ask about Dike
           </span>
           <button
             type="button"
             onClick={() => setOpen(false)}
             aria-label="Close chat"
-            className="font-mono text-[0.7rem] text-muted transition-colors hover:text-fg"
+            className="-m-1 p-1 text-base leading-none text-accent transition-opacity hover:opacity-70"
           >
             ✕
           </button>
@@ -166,13 +175,13 @@ export default function AskDike() {
             placeholder="Ask about Dike..."
             /* text-base (16px) is required: iOS Safari auto-zooms into any input
                with a smaller font, which widens the page and causes horizontal scroll */
-            className="min-w-0 flex-1 bg-transparent text-base text-fg placeholder:text-muted focus:outline-none"
+            className="min-w-0 flex-1 rounded-2xl border border-line bg-bg px-4 py-2.5 text-base text-fg placeholder:text-muted transition-colors focus:border-fg/30 focus:outline-none"
           />
           <button
             type="submit"
             disabled={!input.trim() || busy}
             aria-label="Send"
-            className="shrink-0 rounded-full bg-accent px-3 py-1.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-bg transition-opacity disabled:opacity-40"
+            className="shrink-0 rounded-2xl bg-accent px-4 py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-bg transition-opacity disabled:opacity-40"
           >
             {busy ? "..." : "Send"}
           </button>
@@ -184,9 +193,14 @@ export default function AskDike() {
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Ask about Dike"}
-        className="flex items-center gap-2 rounded-full border border-line bg-bg/85 px-4 py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted backdrop-blur transition-colors hover:text-fg"
+        className={cn(
+          "flex items-center gap-2 rounded-full border bg-bg/85 px-4 py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] backdrop-blur transition-colors",
+          open
+            ? "border-accent bg-accent text-bg"
+            : "border-line text-muted hover:text-fg"
+        )}
       >
-        <span className="pulse-dot" aria-hidden />
+        <Sparkle className={cn("size-3.5", open ? "text-bg" : "text-accent")} />
         {open ? "Close" : "Ask about Dike"}
       </button>
     </div>
