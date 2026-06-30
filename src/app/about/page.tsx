@@ -12,6 +12,11 @@ export const metadata: Metadata = {
 
 const experience = [
   {
+    company: "Western Union",
+    role: "UX Manager",
+    period: "2024 to now",
+  },
+  {
     company: "Kiphar",
     role: "Cofounder · design & build",
     period: "2023 to now",
@@ -99,7 +104,9 @@ export default function AboutPage() {
               at Tipico, where retention climbed from 21% to 46% while I was
               there, and design systems for CST Savings. In 2023 a friend and I
               started Kiphar, a community app, and for the first time I owned the
-              whole thing: the research, the design, and the build.
+              whole thing: the research, the design, and the build. Today I&apos;m
+              the UX Manager at Western Union, where I set what the team focuses on
+              and still get hands-on with the work myself.
             </p>
           </Reveal>
           <Reveal delay={0.1}>
