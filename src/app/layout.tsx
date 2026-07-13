@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import Playground from "@/components/Playground";
 import AskDike from "@/components/AskDike";
 import { site } from "@/data/projects";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -74,6 +75,7 @@ export default function RootLayout({
         <Footer />
         <Playground />
         <AskDike />
+        <SpeedInsights />
       </body>
     </html>
   );
