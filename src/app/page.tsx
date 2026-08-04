@@ -59,7 +59,7 @@ export default function Home() {
         className="mt-6"
       />
 
-      {/* selected work: horizontal scroll gallery */}
+      {/* selected work: index list, with a cursor preview on pointer devices */}
       <WorkGallery projects={projects} />
 
       {/* manifesto */}
