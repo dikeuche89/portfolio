@@ -11,7 +11,7 @@ const SUGGESTIONS = [
   "What does Dike do?",
   "Tell me about the Tipico work",
   "What's his tech stack?",
-  "Is he open to work?",
+  "Can he build something for me?",
 ];
 
 function Sparkle({ className }: { className?: string }) {

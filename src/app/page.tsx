@@ -21,7 +21,7 @@ const capabilities = [
   },
   {
     title: "Design Systems",
-    blurb: "Three systems built from scratch: tokens, components, and the docs to scale them.",
+    blurb: "Three built from scratch: tokens, components, and the docs to scale them.",
     items: [
       "Token architecture",
       "Component libraries",
@@ -31,8 +31,9 @@ const capabilities = [
     ],
   },
   {
-    title: "Full Stack Build",
-    blurb: "I ship what I design, all the way from Figma to production.",
+    title: "Design & Build",
+    blurb:
+      "Whole products, idea to launch, with the same person on the design, the frontend, and the deploy.",
     items: [
       "React & Next.js",
       "TypeScript",
@@ -40,6 +41,37 @@ const capabilities = [
       "Node & APIs",
       "Workflows with AI",
     ],
+  },
+  {
+    title: "Frontend Engineering",
+    blurb:
+      "You already have the design or the brand. I build it properly and make it fast.",
+    items: [
+      "Next.js & React builds",
+      "Design to production",
+      "Performance & accessibility",
+      "Motion & interaction",
+      "CMS & integrations",
+    ],
+  },
+];
+
+const howItWorks = [
+  {
+    step: "Scope call",
+    detail: "We talk through the problem and what done looks like.",
+  },
+  {
+    step: "Written proposal",
+    detail: "Scope, milestones, and a fixed shape before anything starts.",
+  },
+  {
+    step: "Build in the open",
+    detail: "Working previews as it goes, not a reveal at the end.",
+  },
+  {
+    step: "Handover, or I stay on",
+    detail: "Documented, deployed, and yours, with ongoing help if you want it.",
   },
 ];
 
@@ -85,9 +117,9 @@ export default function Home() {
       {/* capabilities */}
       <section className="px-5 pt-28 md:px-10 md:pt-44">
         <Reveal>
-          <p className="kicker mb-10 md:mb-14">( 03 · What I do )</p>
+          <p className="kicker mb-10 md:mb-14">( 03 · What I take on )</p>
         </Reveal>
-        <div className="grid gap-px overflow-hidden border border-line bg-line md:grid-cols-3">
+        <div className="grid gap-px overflow-hidden border border-line bg-line md:grid-cols-2">
           {capabilities.map((cap, i) => (
             <div key={cap.title} className="bg-bg p-7 md:p-9">
               <Reveal delay={i * 0.08}>
@@ -103,6 +135,26 @@ export default function Home() {
             </div>
           ))}
         </div>
+
+        {/* how a project runs */}
+        <Reveal>
+          <p className="kicker mb-8 mt-20 md:mb-10 md:mt-28">( How it works )</p>
+        </Reveal>
+        <ol className="border-b border-line">
+          {howItWorks.map((phase, i) => (
+            <li key={phase.step}>
+              <Reveal delay={i * 0.08}>
+                <div className="grid grid-cols-[auto_1fr] items-baseline gap-x-5 border-t border-line py-5 md:grid-cols-[auto_18rem_1fr] md:gap-x-8 md:py-6">
+                  <span className="kicker accent">0{i + 1}</span>
+                  <p className="display text-lg md:text-xl">{phase.step}</p>
+                  <p className="col-start-2 mt-2 text-sm leading-relaxed text-muted md:col-start-3 md:mt-0">
+                    {phase.detail}
+                  </p>
+                </div>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
       </section>
 
       {/* about teaser */}

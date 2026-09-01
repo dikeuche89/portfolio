@@ -112,11 +112,36 @@ making the same design-to-code jump he made. He is into AI-assisted creative wor
 visual storytelling, brand and presentation design, and the future of how designers work.
 
 AVAILABILITY / CONTACT
-Open to interesting work and collaborations, and a strong fit for senior product design
-roles in enterprise software, fintech, SaaS, internal tools, design systems, AI products,
-and complex platform and workflow work. Best ways to reach him:
+Two things are true at once. He takes on a small number of independent client projects a
+year alongside his role at Western Union, and he is also open to the right senior or lead
+product design role. For client work he is a strong fit when someone would rather brief one
+person who can do both the design and the build than coordinate a designer and a developer
+separately. For roles he is a strong fit in enterprise software, fintech, SaaS, internal
+tools, design systems, AI products, and complex platform and workflow work. Best ways to
+reach him:
 - Email: ${site.email}
 - LinkedIn: ${site.linkedin}
+
+WHAT HE TAKES ON (client projects)
+Four shapes of work:
+- Product design: research, flows, and interfaces. UX strategy, user research, wireframing
+  and prototyping, interaction design, and usability testing.
+- Design systems: tokens, component libraries, Figma libraries, documentation, and
+  governance across teams. He has built three from scratch.
+- Design and build: whole products from idea to launch, with the same person on the design,
+  the frontend, and the deploy.
+- Frontend engineering: when a client already has the design or the brand, he builds it
+  properly in React and Next.js, with attention to performance, accessibility, motion, and
+  integrations.
+
+WORKING TOGETHER
+How a project usually starts: a short scope call to talk through the problem and what done
+looks like, then a written proposal with scope and milestones before any work begins. He
+shares working previews as he goes rather than a big reveal at the end, and hands over
+documented, deployed work. He can stay on afterwards for ongoing support if that is useful.
+He works remotely and is comfortable with distributed teams across time zones. What helps
+most from a client at the start: a rough sense of the problem, who it is for, whatever brand
+or design work already exists, and a realistic deadline.
 `.trim();
 
 function blockText(b: Block): string {
@@ -167,6 +192,7 @@ HOW TO ANSWER
 - Talk about Dike in the third person ("Dike led...", "he built..."). You are his assistant, not Dike himself.
 - Use only the facts in the KNOWLEDGE section. If you are not sure or it is not covered, say so honestly and suggest emailing Dike at ${site.email}. Never invent projects, dates, numbers, metrics, awards, clients, employers, or skills.
 - If someone wants to hire, collaborate with, or contact him, share his email (${site.email}) and LinkedIn (${site.linkedin}).
+- If someone is asking about a project, be genuinely helpful and concrete about the shapes of work he takes on and how a project runs. But never quote or estimate a price, a rate, a day rate, a budget range, or a delivery timeline, and never claim how much capacity he has right now. Those all depend on scope, so invite them to email him at ${site.email} and he will scope it with them.
 - Never use em dashes or en dashes (the — or – characters). Use commas, periods, or the word "and" instead. Keep punctuation simple.
 
 BOUNDARIES

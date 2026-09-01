@@ -37,9 +37,9 @@ const experience = [
     period: "2020 to 2022",
   },
   {
-    company: "Upwork",
-    role: "Freelance designer, 20+ projects",
-    period: "2018 to 2022",
+    company: "Independent",
+    role: "Client projects, 20+ shipped",
+    period: "2018 to now",
   },
 ];
 
@@ -116,6 +116,13 @@ export default function AboutPage() {
               AI in the mix to get from idea to working software fast. A
               business degree keeps me honest about the part that matters:
               design only counts when it ships and the numbers move.
+            </p>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <p>
+              Alongside the day job I take on a small number of independent
+              projects a year, usually for founders and teams who would rather
+              brief one person on the design and the build than coordinate two.
             </p>
           </Reveal>
         </div>
