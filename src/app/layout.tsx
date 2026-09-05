@@ -39,6 +39,9 @@ export const metadata: Metadata = {
     template: "%s · Dike Uche",
   },
   description: site.description,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: site.title,
     description: site.description,
@@ -46,6 +49,45 @@ export const metadata: Metadata = {
     siteName: "Dike Uche",
     type: "website",
   },
+};
+
+// Structured data: tells search and answer engines who Dike is, in one place.
+// Docs recommend a <script> in layout/page with `<` escaped (see the JSON-LD guide).
+const personId = `${site.url}/#person`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": personId,
+      name: site.name,
+      url: site.url,
+      image: `${site.url}/images/me-portrait.webp`,
+      email: `mailto:${site.email}`,
+      jobTitle: "UX Manager",
+      worksFor: { "@type": "Organization", name: "Western Union" },
+      description: site.description,
+      sameAs: [site.linkedin, "https://github.com/dikeuche89"],
+      knowsAbout: [
+        "UX design",
+        "Product design",
+        "Design systems",
+        "Enterprise UX",
+        "Frontend engineering",
+        "React",
+        "Next.js",
+        "TypeScript",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${site.url}/#website`,
+      url: site.url,
+      name: site.name,
+      publisher: { "@id": personId },
+    },
+  ],
 };
 
 export const viewport: Viewport = {
@@ -66,6 +108,12 @@ export default function RootLayout({
       className={`${archivo.variable} ${instrument.variable} ${plexMono.variable}`}
     >
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         <SmoothScroll />
         <Cursor />
         <div className="grain" />
