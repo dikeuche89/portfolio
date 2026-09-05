@@ -366,10 +366,16 @@ export default function PhysicsHeadline() {
       ref={root}
       onClick={onHeadlineClick}
       title="knock it over"
+      aria-label="Design, engineered."
       className="display invisible select-none text-[clamp(3.25rem,12.5vw,12.5rem)] [@media(hover:hover)]:cursor-pointer"
     >
       {LINES.map((line) => (
-        <span key={line.text} data-chars={line.chars} className={line.className}>
+        <span
+          key={line.text}
+          aria-hidden
+          data-chars={line.chars}
+          className={line.className}
+        >
           {[...line.text].map((c, i) => (
             <span
               key={i}

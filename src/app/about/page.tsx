@@ -8,6 +8,16 @@ export const metadata: Metadata = {
   title: "About",
   description:
     "Dike Uche, UX designer turned full stack builder. Eight years of product design, now shipping the code too.",
+  alternates: {
+    canonical: "/about",
+  },
+};
+
+// Marks this page as Dike's profile; the Person entity itself lives in the root layout.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  mainEntity: { "@id": `${site.url}/#person` },
 };
 
 const experience = [
@@ -71,6 +81,12 @@ const toolbox = [
 export default function AboutPage() {
   return (
     <div className="px-5 pt-32 md:px-10 md:pt-44">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       {/* intro */}
       <Reveal>
         <p className="kicker">( About · Dike Uche )</p>
