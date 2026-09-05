@@ -84,9 +84,9 @@ export default function Hero() {
             data-hero-fade
             className="invisible max-w-md text-base leading-relaxed text-muted md:text-lg"
           >
-            I&apos;ve spent eight years designing digital products, and now I
-            write the code that ships them too, handling the strategy, the
-            design systems, and the frontend, all the way through.
+            I design digital products and write the code that ships them.
+            Strategy, design systems, and the frontend, handled end to end, so
+            one person carries it from first sketch to production.
           </p>
           <p data-hero-fade className="kicker invisible md:text-right">
             Scroll
