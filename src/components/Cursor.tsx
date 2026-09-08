@@ -15,7 +15,7 @@ export default function Cursor() {
 
   useGSAP(
     () => {
-      if (pathname === "/") return;
+      if (pathname === "/" || pathname === "/after-hours") return;
       if (!window.matchMedia("(pointer: fine)").matches) return;
       if (prefersReducedMotion()) return;
 
@@ -82,7 +82,7 @@ export default function Cursor() {
     { dependencies: [pathname], revertOnUpdate: true },
   );
 
-  if (pathname === "/") return null;
+  if (pathname === "/" || pathname === "/after-hours") return null;
 
   return (
     <div
