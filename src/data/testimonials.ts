@@ -1,5 +1,6 @@
 export type Testimonial = {
   quote: string;
+  excerpt?: string;
   name: string;
   title: string;
   company: string;
@@ -17,6 +18,8 @@ export const testimonials: Testimonial[] = [
     quote:
       "Dike is a very creative designer that delivers very high quality work. His designs are very clean and sharp. He is very easy to work with and accommodates all of our requirements. He is a consummate professional.",
     name: "Alex Aydin",
+    excerpt:
+      "He is very easy to work with and accommodates all of our requirements. He is a consummate professional.",
     title: "Founder & CEO",
     company: "BookingPal",
   },
@@ -28,3 +31,5 @@ export const testimonials: Testimonial[] = [
     company: "YooFinn, TD Bank",
   },
 ];
+
+export const featuredTestimonial = testimonials[1];

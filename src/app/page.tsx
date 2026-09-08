@@ -1,192 +1,75 @@
+import Image from "next/image";
 import Link from "next/link";
 import Hero from "@/components/Hero";
-import Marquee from "@/components/Marquee";
 import WorkGallery from "@/components/WorkGallery";
-import Portrait from "@/components/Portrait";
-import Testimonials from "@/components/Testimonials";
-import { Reveal, SplitReveal, WordScrub } from "@/components/reveal";
+import { AskDikeTrigger } from "@/components/AskDike";
 import { projects } from "@/data/projects";
-
-const capabilities = [
-  {
-    title: "Product Design",
-    blurb: "Research, flows, and interfaces that earn their place on screen.",
-    items: [
-      "UX strategy",
-      "User research",
-      "Wireframing & prototyping",
-      "Interaction design",
-      "Usability testing",
-    ],
-  },
-  {
-    title: "Design Systems",
-    blurb: "Three built from scratch: tokens, components, and the docs to scale them.",
-    items: [
-      "Token architecture",
-      "Component libraries",
-      "Figma libraries",
-      "Documentation",
-      "Governance across teams",
-    ],
-  },
-  {
-    title: "Design & Build",
-    blurb:
-      "Whole products, idea to launch, with the same person on the design, the frontend, and the deploy.",
-    items: [
-      "React & Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "Node & APIs",
-      "Workflows with AI",
-    ],
-  },
-  {
-    title: "Frontend Engineering",
-    blurb:
-      "You already have the design or the brand. I build it properly and make it fast.",
-    items: [
-      "Next.js & React builds",
-      "Design to production",
-      "Performance & accessibility",
-      "Motion & interaction",
-      "CMS & integrations",
-    ],
-  },
-];
-
-const howItWorks = [
-  {
-    step: "Scope call",
-    detail: "We talk through the problem and what done looks like.",
-  },
-  {
-    step: "Written proposal",
-    detail: "Scope, milestones, and a fixed shape before anything starts.",
-  },
-  {
-    step: "Build in the open",
-    detail: "Working previews as it goes, not a reveal at the end.",
-  },
-  {
-    step: "Handover, or I stay on",
-    detail: "Documented, deployed, and yours, with ongoing help if you want it.",
-  },
-];
+import { featuredTestimonial } from "@/data/testimonials";
+import styles from "@/components/Gallery.module.css";
 
 export default function Home() {
   return (
-    <>
+    <div id="homepage">
       <Hero />
-
-      <Marquee
-        items={[
-          "Product design",
-          "Design systems",
-          "Frontend engineering",
-          "UX strategy",
-          "Full stack build",
-        ]}
-        className="mt-6"
-      />
-
-      {/* selected work: index list, with a cursor preview on pointer devices */}
-      <WorkGallery projects={projects} />
-
-      {/* manifesto */}
-      <section className="px-5 pt-28 md:px-10 md:pt-44">
-        <Reveal>
-          <p className="kicker mb-8">( 02 · The point )</p>
-        </Reveal>
-        <WordScrub className="display max-w-6xl text-[clamp(1.75rem,4.5vw,4rem)] font-bold normal-case leading-[1.05]">
-          Most designers stop at handoff. I keep going, through the components,
-          the edge cases, and the deploy, because design that ships is the only
-          kind that counts.
-        </WordScrub>
-        <Reveal delay={0.15} className="mt-10">
-          <Link
-            href="/about"
-            className="link-underline font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-muted hover:text-accent"
-          >
-            More about me ↗
-          </Link>
-        </Reveal>
-      </section>
-
-      {/* capabilities */}
-      <section className="px-5 pt-28 md:px-10 md:pt-44">
-        <Reveal>
-          <p className="kicker mb-10 md:mb-14">( 03 · What I take on )</p>
-        </Reveal>
-        <div className="grid gap-px overflow-hidden border border-line bg-line md:grid-cols-2">
-          {capabilities.map((cap, i) => (
-            <div key={cap.title} className="bg-bg p-7 md:p-9">
-              <Reveal delay={i * 0.08}>
-                <p className="kicker accent mb-8">0{i + 1}</p>
-                <h3 className="display text-2xl md:text-[1.75rem]">{cap.title}</h3>
-                <p className="mt-4 text-sm leading-relaxed text-muted">{cap.blurb}</p>
-                <ul className="mt-8 space-y-2.5 border-t border-line pt-6 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted">
-                  {cap.items.map((item) => (
-                    <li key={item}>· {item}</li>
-                  ))}
-                </ul>
-              </Reveal>
+      <div className={styles.shell}>
+        <WorkGallery projects={projects} />
+        <section
+          className={styles.person}
+          aria-labelledby="person-title"
+          id="person"
+        >
+          <div className={styles.personGrid}>
+            <div className={styles.portrait}>
+              <Image
+                src="/images/me-portrait.webp"
+                alt="Dike Uche"
+                width={584}
+                height={1600}
+                sizes="(max-width: 560px) 110px, 180px"
+              />
             </div>
-          ))}
-        </div>
-
-        {/* how a project runs */}
-        <Reveal>
-          <p className="kicker mb-8 mt-20 md:mb-10 md:mt-28">( How it works )</p>
-        </Reveal>
-        <ol className="border-b border-line">
-          {howItWorks.map((phase, i) => (
-            <li key={phase.step}>
-              <Reveal delay={i * 0.08}>
-                <div className="grid grid-cols-[auto_1fr] items-baseline gap-x-5 border-t border-line py-5 md:grid-cols-[auto_18rem_1fr] md:gap-x-8 md:py-6">
-                  <span className="kicker accent">0{i + 1}</span>
-                  <p className="display text-lg md:text-xl">{phase.step}</p>
-                  <p className="col-start-2 mt-2 text-sm leading-relaxed text-muted md:col-start-3 md:mt-0">
-                    {phase.detail}
-                  </p>
-                </div>
-              </Reveal>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* about teaser */}
-      <section className="grid gap-10 px-5 pt-28 md:grid-cols-12 md:gap-8 md:px-10 md:pt-44">
-        <div className="md:col-span-5">
-          <Portrait className="aspect-[4/5] w-full md:aspect-[3/4]" />
-        </div>
-        <div className="flex flex-col justify-center md:col-span-6 md:col-start-7">
-          <Reveal>
-            <p className="kicker mb-8">( 04 · About )</p>
-          </Reveal>
-          <SplitReveal className="display text-[clamp(2rem,4.5vw,3.75rem)]">
-            A designer who got tired of watching good work die in handoff.
-          </SplitReveal>
-          <Reveal delay={0.15}>
-            <p className="mt-8 max-w-md leading-relaxed text-muted">
-              I design and build digital products from idea to launch, bringing
-              product thinking, UX craft, and a healthy dose of AI to the
-              workflow, from Figma to production code and everything in between.
-            </p>
-            <Link
-              href="/about"
-              className="link-underline mt-8 inline-block font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-muted hover:text-accent"
-            >
-              The full story ↗
-            </Link>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* testimonials */}
-      <Testimonials />
-    </>
+            <div>
+              <p className={`${styles.label} ${styles.accentLabel}`}>
+                02 / The person
+              </p>
+              <h2 id="person-title" className={styles.heading}>
+                Good to meet you.
+                <br />
+                <span className={styles.serif}>I’m Dike.</span>
+              </h2>
+              <p className={styles.personCopy}>
+                I bring product thinking, design craft, and code to the same
+                table. From the big decisions to the smallest details, I stay
+                involved.
+              </p>
+              <div className={styles.personLinks}>
+                <Link className={styles.textLink} href="/about">
+                  More about me &amp; how I work{" "}
+                  <span aria-hidden="true">↗</span>
+                </Link>
+                <AskDikeTrigger
+                  className={`${styles.textLink} ${styles.secondaryLink}`}
+                />
+              </div>
+              <ul className={styles.capabilities} aria-label="Capabilities">
+                <li>Product design</li>
+                <li>Design systems</li>
+                <li>Frontend engineering</li>
+              </ul>
+            </div>
+          </div>
+          <figure className={styles.quote}>
+            <p className={styles.label}>A collaborator’s perspective</p>
+            <div>
+              <blockquote>“{featuredTestimonial.excerpt}”</blockquote>
+              <figcaption>
+                {featuredTestimonial.name} · {featuredTestimonial.title},{" "}
+                {featuredTestimonial.company}
+              </figcaption>
+            </div>
+          </figure>
+        </section>
+      </div>
+    </div>
   );
 }

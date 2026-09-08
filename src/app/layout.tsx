@@ -6,7 +6,6 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import Playground from "@/components/Playground";
 import AskDike from "@/components/AskDike";
 import { site } from "@/data/projects";
 
@@ -120,7 +119,6 @@ export default function RootLayout({
         <Nav />
         <main>{children}</main>
         <Footer />
-        <Playground />
         <AskDike />
       </body>
     </html>

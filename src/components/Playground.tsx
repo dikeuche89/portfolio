@@ -48,6 +48,15 @@ export default function Playground() {
   );
   const [heroInspect, setHeroInspect] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      wrapRef.current
+        ?.querySelector<HTMLButtonElement>("#playground-controls button")
+        ?.focus({ preventScroll: true });
+    }
+  }, [open]);
 
   // Synchronize the document with saved preferences after hydration.
   useEffect(() => {
@@ -80,7 +89,10 @@ export default function Playground() {
         setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
     };
     document.addEventListener("pointerdown", onDown);
     document.addEventListener("keydown", onKey);
@@ -98,8 +110,15 @@ export default function Playground() {
     return () => window.removeEventListener("playground:hero", onHero);
   }, []);
 
-  const inspectHero = () =>
+  const inspectHero = () => {
     window.dispatchEvent(new CustomEvent("playground:inspect"));
+    setOpen(false);
+    document.getElementById("hero")?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
+  };
 
   return (
     <>
@@ -125,13 +144,13 @@ export default function Playground() {
       </div>
 
       {/* control panel */}
-      <div
-        ref={wrapRef}
-        className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-[calc(1rem+env(safe-area-inset-left))] z-[140] md:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] md:left-[calc(1.5rem+env(safe-area-inset-left))]"
-      >
+      <div ref={wrapRef} className="relative z-[140]">
         <div
+          id="playground-controls"
+          inert={!open}
+          aria-hidden={!open}
           className={cn(
-            "mb-2 origin-bottom-left overflow-hidden rounded-xl border border-line bg-bg/85 backdrop-blur transition-all duration-300",
+            "absolute bottom-full left-0 mb-2 origin-bottom-left overflow-hidden rounded-xl border border-line bg-bg shadow-2xl transition-all duration-300 md:left-auto md:right-0",
             open
               ? "max-h-96 opacity-100"
               : "pointer-events-none max-h-0 opacity-0",
@@ -146,6 +165,7 @@ export default function Playground() {
                   type="button"
                   title={a.name}
                   aria-label={a.name}
+                  aria-pressed={accent === a.hex}
                   onClick={() => pickAccent(a.hex)}
                   className="flex size-11 items-center justify-center rounded-full transition-transform hover:scale-110"
                 >
@@ -165,6 +185,7 @@ export default function Playground() {
             <div className="grid grid-cols-2 gap-1 rounded-lg border border-line p-1">
               <button
                 type="button"
+                aria-pressed={!blueprint}
                 onClick={() => blueprint && toggleBlueprint()}
                 className={cn(
                   "rounded-md py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] transition-colors",
@@ -175,6 +196,7 @@ export default function Playground() {
               </button>
               <button
                 type="button"
+                aria-pressed={blueprint}
                 onClick={() => !blueprint && toggleBlueprint()}
                 className={cn(
                   "rounded-md py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] transition-colors",
@@ -198,10 +220,13 @@ export default function Playground() {
         </div>
 
         <button
+          ref={triggerRef}
           type="button"
           onClick={() => setOpen((o) => !o)}
-          aria-label="Open playground"
-          className="flex items-center gap-2 rounded-full border border-line bg-bg/85 px-4 py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted backdrop-blur transition-colors hover:text-fg"
+          aria-label={open ? "Close playground" : "Open playground"}
+          aria-expanded={open}
+          aria-controls="playground-controls"
+          className="flex min-h-11 items-center gap-2 text-xs text-muted transition-colors hover:text-fg"
         >
           <span
             className="size-2.5 rounded-full transition-transform"

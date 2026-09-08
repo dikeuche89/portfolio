@@ -3,6 +3,9 @@ import ParallaxImage from "@/components/ParallaxImage";
 import Portrait from "@/components/Portrait";
 import { Reveal, SplitReveal, WordScrub } from "@/components/reveal";
 import { site } from "@/data/projects";
+import { capabilities, howItWorks } from "@/data/services";
+import Testimonials from "@/components/Testimonials";
+import styles from "@/components/Gallery.module.css";
 
 export const metadata: Metadata = {
   title: "About",
@@ -53,31 +56,6 @@ const experience = [
   },
 ];
 
-const toolbox = [
-  {
-    label: "Design",
-    items: [
-      "Figma & Figma Make",
-      "Design systems",
-      "Prototyping",
-      "User research",
-      "Usability testing",
-      "Interaction design",
-    ],
-  },
-  {
-    label: "Build",
-    items: [
-      "React & Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "Node & APIs",
-      "Builder.io",
-      "Claude & AI workflows",
-    ],
-  },
-];
-
 export default function AboutPage() {
   return (
     <div className="px-5 pt-32 md:px-10 md:pt-44">
@@ -119,10 +97,10 @@ export default function AboutPage() {
               interface design at BookingPal, then the core betting experience
               at Tipico, where retention climbed from 21% to 46% while I was
               there, and design systems for CST Savings. In 2023 a friend and I
-              started Kiphar, a community app, and for the first time I owned the
-              whole thing: the research, the design, and the build. Today I&apos;m
-              the UX Manager at Western Union, where I set what the team focuses on
-              and still get hands-on with the work myself.
+              started Kiphar, a community app, and for the first time I owned
+              the whole thing: the research, the design, and the build. Today
+              I&apos;m the UX Manager at Western Union, where I set what the
+              team focuses on and still get hands-on with the work myself.
             </p>
           </Reveal>
           <Reveal delay={0.1}>
@@ -170,24 +148,48 @@ export default function AboutPage() {
         </Reveal>
       </section>
 
-      {/* toolbox */}
-      <section className="pt-28 md:pt-44">
-        <Reveal>
-          <p className="kicker mb-10 md:mb-14">( Toolbox )</p>
-        </Reveal>
-        <div className="grid gap-px overflow-hidden border border-line bg-line md:grid-cols-2">
-          {toolbox.map((col, i) => (
-            <div key={col.label} className="bg-bg p-7 md:p-9">
-              <Reveal delay={i * 0.08}>
-                <h3 className="display text-2xl md:text-[1.75rem]">{col.label}</h3>
-                <ul className="mt-8 space-y-2.5 border-t border-line pt-6 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted">
-                  {col.items.map((item) => (
-                    <li key={item}>· {item}</li>
+      <section
+        id="how-i-work"
+        className={styles.serviceSection}
+        aria-labelledby="services-title"
+      >
+        <p className={styles.label}>How I can help</p>
+        <h2 id="services-title" className={styles.heading}>
+          From the idea to the details.
+        </h2>
+        <div className={styles.serviceList}>
+          {capabilities.map((capability, index) => (
+            <details className={styles.service} key={capability.title}>
+              <summary>
+                <span className={`${styles.label} ${styles.accentLabel}`}>
+                  0{index + 1}
+                </span>
+                <span className={styles.serviceTitle}>{capability.title}</span>
+              </summary>
+              <div className={styles.serviceBody}>
+                <p>{capability.blurb}</p>
+                <ul>
+                  {capability.items.map((item) => (
+                    <li key={item}>{item}</li>
                   ))}
                 </ul>
-              </Reveal>
-            </div>
+              </div>
+            </details>
           ))}
+        </div>
+        <div className={styles.process}>
+          <h3>How a project runs</h3>
+          <ol>
+            {howItWorks.map((phase, index) => (
+              <li key={phase.step}>
+                <span className={`${styles.label} ${styles.accentLabel}`}>
+                  0{index + 1}
+                </span>
+                <h4>{phase.step}</h4>
+                <p>{phase.detail}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -198,9 +200,9 @@ export default function AboutPage() {
             <p className="kicker mb-8">( Off the clock )</p>
           </Reveal>
           <WordScrub className="display max-w-xl text-[clamp(1.6rem,3.6vw,3rem)] font-bold normal-case leading-[1.08]">
-            You&apos;ll usually find me on hiking trails, behind a camera, in the
-            kitchen, or watching soccer, and mentoring junior designers making
-            the same jump I did.
+            You&apos;ll usually find me on hiking trails, behind a camera, in
+            the kitchen, or watching soccer, and mentoring junior designers
+            making the same jump I did.
           </WordScrub>
           <Reveal delay={0.1}>
             <a
@@ -223,6 +225,7 @@ export default function AboutPage() {
           />
         </div>
       </section>
+      <Testimonials />
     </div>
   );
 }

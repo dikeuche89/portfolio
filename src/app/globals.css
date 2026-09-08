@@ -83,8 +83,13 @@ body {
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
 }
 
 .outline-text {
@@ -105,11 +110,22 @@ body {
 }
 
 @keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(-3%, 2%); }
-  40% { transform: translate(2%, -3%); }
-  60% { transform: translate(-2%, -2%); }
-  80% { transform: translate(3%, 3%); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-3%, 2%);
+  }
+  40% {
+    transform: translate(2%, -3%);
+  }
+  60% {
+    transform: translate(-2%, -2%);
+  }
+  80% {
+    transform: translate(3%, 3%);
+  }
 }
 
 /* ---------- touch targets ---------- */
@@ -196,15 +212,10 @@ body {
   opacity: 0.5;
 }
 
-/* ---------- work list hover dimming ---------- */
-
-@media (hover: hover) and (pointer: fine) {
-  .work-list:hover .work-row { opacity: 0.35; }
-  .work-list:hover .work-row:hover { opacity: 1; }
-}
-
-.work-row {
-  transition: opacity 0.45s ease;
+/* Let the homepage's product imagery and hero carry the visual interest. */
+body:has(#homepage) .grain {
+  animation: none;
+  opacity: 0.025;
 }
 
 /* ---------- motion safety ---------- */

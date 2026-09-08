@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -61,9 +60,9 @@ export default function Hero() {
               </span>
             </p>
             <div className={styles.actions} data-hero-reveal>
-              <Link href="#work" className={styles.workLink}>
+              <a href="#work" className={styles.workLink}>
                 Explore the work <span aria-hidden="true">↗</span>
-              </Link>
+              </a>
               <span className={styles.endToEnd}>
                 Thought through. Built through.
               </span>
