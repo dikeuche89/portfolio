@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const ACCENTS = [
@@ -12,52 +13,71 @@ const ACCENTS = [
   { name: "Rose", hex: "#ff5c8a" },
 ];
 const DEFAULT = ACCENTS[0].hex;
+const PREFERENCES_EVENT = "playground:preferences";
+
+function subscribePreferences(notify: () => void) {
+  window.addEventListener("storage", notify);
+  window.addEventListener(PREFERENCES_EVENT, notify);
+  return () => {
+    window.removeEventListener("storage", notify);
+    window.removeEventListener(PREFERENCES_EVENT, notify);
+  };
+}
+
+function readAccent() {
+  const saved = localStorage.getItem("pg-accent");
+  return ACCENTS.find((accent) => accent.hex === saved)?.hex ?? DEFAULT;
+}
+
+function readBlueprint() {
+  return localStorage.getItem("pg-blueprint") === "1";
+}
 
 export default function Playground() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [accent, setAccent] = useState(DEFAULT);
-  const [blueprint, setBlueprint] = useState(false);
-  const [heroDown, setHeroDown] = useState(false);
+  const accent = useSyncExternalStore(
+    subscribePreferences,
+    readAccent,
+    () => DEFAULT,
+  );
+  const blueprint = useSyncExternalStore(
+    subscribePreferences,
+    readBlueprint,
+    () => false,
+  );
+  const [heroInspect, setHeroInspect] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
-  // set the accent token and let canvas-based bits (e.g. the hero dots) follow along
-  const applyAccent = (hex: string) => {
-    document.documentElement.style.setProperty("--color-accent", hex);
-    window.dispatchEvent(new CustomEvent("playground:accent", { detail: { hex } }));
-  };
-
-  // restore saved prefs on mount
+  // Synchronize the document with saved preferences after hydration.
   useEffect(() => {
-    const a = localStorage.getItem("pg-accent");
-    const b = localStorage.getItem("pg-blueprint") === "1";
-    if (a) {
-      applyAccent(a);
-      setAccent(a);
-    }
-    if (b) {
-      document.documentElement.classList.add("blueprint");
-      setBlueprint(true);
-    }
-  }, []);
+    document.documentElement.style.setProperty("--color-accent", accent);
+    window.dispatchEvent(
+      new CustomEvent("playground:accent", { detail: { hex: accent } }),
+    );
+  }, [accent]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("blueprint", blueprint);
+  }, [blueprint]);
 
   const pickAccent = (hex: string) => {
-    applyAccent(hex);
     localStorage.setItem("pg-accent", hex);
-    setAccent(hex);
+    window.dispatchEvent(new Event(PREFERENCES_EVENT));
   };
 
   const toggleBlueprint = () => {
     const next = !blueprint;
-    document.documentElement.classList.toggle("blueprint", next);
     localStorage.setItem("pg-blueprint", next ? "1" : "0");
-    setBlueprint(next);
+    window.dispatchEvent(new Event(PREFERENCES_EVENT));
   };
 
   // close the panel when tapping/clicking away, or on Escape
   useEffect(() => {
     if (!open) return;
     const onDown = (e: PointerEvent) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node))
+        setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
@@ -70,23 +90,29 @@ export default function Playground() {
     };
   }, [open]);
 
-  // keep the button label in sync with whether the hero is currently knocked over
+  // Keep the control in sync with the homepage's layer inspector.
   useEffect(() => {
     const onHero = (e: Event) =>
-      setHeroDown(!!(e as CustomEvent<{ active: boolean }>).detail?.active);
+      setHeroInspect(!!(e as CustomEvent<{ active: boolean }>).detail?.active);
     window.addEventListener("playground:hero", onHero);
     return () => window.removeEventListener("playground:hero", onHero);
   }, []);
 
-  const shake = () => window.dispatchEvent(new CustomEvent("playground:shake"));
+  const inspectHero = () =>
+    window.dispatchEvent(new CustomEvent("playground:inspect"));
 
   return (
     <>
       {/* blueprint overlay: a design grid + build notes, shown only in blueprint mode */}
-      <div className="bp-overlay pointer-events-none fixed inset-0 z-[80]" aria-hidden>
+      <div
+        className="bp-overlay pointer-events-none fixed inset-0 z-[80]"
+        aria-hidden
+      >
         <div className="bp-grid absolute inset-0" />
         {/* mobile: stacked down the left edge so they never collide. md+: corners. */}
-        <span className="bp-note left-5 top-20 md:left-10">Next.js 16 · App Router · static</span>
+        <span className="bp-note left-5 top-20 md:left-10">
+          Next.js 16 · App Router · static
+        </span>
         <span className="bp-note left-5 top-28 md:left-auto md:right-10 md:top-20">
           GSAP + Lenis · fluid type: clamp()
         </span>
@@ -106,7 +132,9 @@ export default function Playground() {
         <div
           className={cn(
             "mb-2 origin-bottom-left overflow-hidden rounded-xl border border-line bg-bg/85 backdrop-blur transition-all duration-300",
-            open ? "max-h-96 opacity-100" : "pointer-events-none max-h-0 opacity-0"
+            open
+              ? "max-h-96 opacity-100"
+              : "pointer-events-none max-h-0 opacity-0",
           )}
         >
           <div className="w-60 p-4">
@@ -124,7 +152,8 @@ export default function Playground() {
                   <span
                     className={cn(
                       "size-6 rounded-full",
-                      accent === a.hex && "ring-2 ring-fg ring-offset-2 ring-offset-bg"
+                      accent === a.hex &&
+                        "ring-2 ring-fg ring-offset-2 ring-offset-bg",
                     )}
                     style={{ background: a.hex }}
                   />
@@ -139,7 +168,7 @@ export default function Playground() {
                 onClick={() => blueprint && toggleBlueprint()}
                 className={cn(
                   "rounded-md py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] transition-colors",
-                  !blueprint ? "bg-fg text-bg" : "text-muted hover:text-fg"
+                  !blueprint ? "bg-fg text-bg" : "text-muted hover:text-fg",
                 )}
               >
                 Live
@@ -149,20 +178,22 @@ export default function Playground() {
                 onClick={() => !blueprint && toggleBlueprint()}
                 className={cn(
                   "rounded-md py-2.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] transition-colors",
-                  blueprint ? "bg-fg text-bg" : "text-muted hover:text-fg"
+                  blueprint ? "bg-fg text-bg" : "text-muted hover:text-fg",
                 )}
               >
                 Blueprint
               </button>
             </div>
 
-            <button
-              type="button"
-              onClick={shake}
-              className="mt-3 w-full rounded-lg border border-line py-3 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted transition-colors hover:border-fg hover:text-fg"
-            >
-              {heroDown ? "Reset the hero ↑" : "Knock the hero over ↓"}
-            </button>
+            {pathname === "/" && (
+              <button
+                type="button"
+                onClick={inspectHero}
+                className="mt-3 w-full rounded-lg border border-line py-3 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted transition-colors hover:border-fg hover:text-fg"
+              >
+                {heroInspect ? "Close hero inspection" : "Inspect hero layers"}
+              </button>
+            )}
           </div>
         </div>
 
@@ -174,7 +205,10 @@ export default function Playground() {
         >
           <span
             className="size-2.5 rounded-full transition-transform"
-            style={{ background: accent, transform: open ? "scale(1.3)" : "scale(1)" }}
+            style={{
+              background: accent,
+              transform: open ? "scale(1.3)" : "scale(1)",
+            }}
           />
           Playground
         </button>
