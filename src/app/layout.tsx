@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -120,6 +121,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <AskDike />
+        <Analytics />
       </body>
     </html>
   );
