@@ -677,4 +677,13 @@ export const site = {
   title: "Dike Uche · UX Designer & Full Stack Builder",
   description:
     "UX designer turned full stack builder. I design digital products end to end, then write the code that ships them.",
+  // The one photo of Dike, used on Home, About and in structured data. To
+  // change it, drop a new file in public/images and update this entry (then
+  // check the crop in Gallery.module.css, `.portrait img`).
+  portrait: {
+    src: "/images/home-02.webp",
+    width: 1800,
+    height: 2400,
+    alt: "Dike Uche hiking on a mountain trail",
+  },
 };

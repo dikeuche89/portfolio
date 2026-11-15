@@ -1,85 +1,125 @@
-"use client";
-
-import { useRef } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import HeroAssembly from "@/components/HeroAssembly";
+import Image from "next/image";
 import styles from "./Hero.module.css";
 
-gsap.registerPlugin(useGSAP);
-
-export default function Hero() {
-  const scope = useRef<HTMLElement>(null);
-
-  useGSAP(
-    () => {
-      const media = gsap.matchMedia();
-      media.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.from("[data-hero-reveal]", {
-          y: 24,
-          opacity: 0,
-          duration: 1,
-          stagger: 0.1,
-          ease: "power3.out",
-          clearProps: "all",
-        });
-      });
-      return () => media.revert();
-    },
-    { scope },
-  );
-
+/** One Kiphar screen pulled apart into wireframe, components, and finished UI. */
+function ProductLayers() {
   return (
-    <section
-      ref={scope}
-      className={styles.hero}
-      aria-labelledby="hero-title"
-      id="hero"
-    >
-      <div className={styles.viewport}>
-        <div className={styles.light} aria-hidden="true" />
-        <div className={styles.horizon} aria-hidden="true" />
-        <div className={styles.body}>
-          <div className={styles.copy}>
-            <p className={styles.eyebrow} data-hero-reveal>
-              <span className={styles.identityMark} aria-hidden="true" />
-              Dike Uche / Designer &amp; builder
-            </p>
-            <h1 id="hero-title" className={styles.headline} data-hero-reveal>
-              <span className={styles.design}>
-                Design<span className={styles.punctuation}>,</span>
-              </span>
-              <span className={styles.engineered}>
-                engineered<span className={styles.punctuation}>.</span>
-              </span>
-            </h1>
-            <p className={styles.description} data-hero-reveal>
-              From the first what-if to the final it-works.
-              <span>
-                I design digital products, then build them into the real thing.
-              </span>
-            </p>
-            <div className={styles.actions} data-hero-reveal>
-              <a href="#work" className={styles.workLink}>
-                Explore the work <span aria-hidden="true">↗</span>
-              </a>
-              <span className={styles.endToEnd}>
-                Thought through. Built through.
-              </span>
+    <div className={styles.figure}>
+      <div className={styles.shadow} aria-hidden="true" />
+      <div
+        className={styles.product}
+        role="img"
+        aria-label="An exploded view of the Kiphar app: wireframe structure, reusable components, and the finished emergency screen, arranged in three layers."
+      >
+        <div
+          className={`${styles.plane} ${styles.structure}`}
+          aria-hidden="true"
+        >
+          <div className={styles.structureInner}>
+            <div className={styles.wireHeader} />
+            <div className={styles.wireParagraph} />
+            <div className={styles.wireGrid}>
+              {[0, 1, 2, 3].map((item) => (
+                <div key={item}>
+                  <i />
+                  <span />
+                  <span />
+                </div>
+              ))}
+            </div>
+            <div className={styles.wireButton} />
+            <div className={styles.wireNav}>
+              <i />
+              <i />
+              <i />
+              <i />
             </div>
           </div>
-          <HeroAssembly />
         </div>
-        <div className={styles.footer}>
-          <p>
-            <span className={styles.footerIndex}>01 — 03</span> Idea. System.
-            Product.
+        <div
+          className={`${styles.plane} ${styles.components}`}
+          aria-hidden="true"
+        >
+          <div className={styles.componentsInner}>
+            <div className={styles.componentType}>Aa</div>
+            <div className={styles.swatches}>
+              <i />
+              <i />
+              <i />
+              <i />
+            </div>
+            <div className={styles.componentGrid}>
+              <div>
+                <span>+</span>
+                <i />
+                <i />
+              </div>
+              <div>
+                <span>↗</span>
+                <i />
+                <i />
+              </div>
+            </div>
+            <div className={styles.componentButton} />
+            <div className={styles.componentLines}>
+              <i />
+              <i />
+              <i />
+            </div>
+          </div>
+        </div>
+        <div
+          className={`${styles.plane} ${styles.interface}`}
+          aria-hidden="true"
+        >
+          <div className={styles.screen}>
+            {/* CSS frames the original image shared with the case study. */}
+            <Image
+              src="/images/kiphar-emergency.webp"
+              alt=""
+              width={400}
+              height={620}
+              sizes="400px"
+              loading="eager"
+              fetchPriority="high"
+              className={styles.screenImage}
+            />
+          </div>
+          <div className={styles.glassEdge} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Hero() {
+  return (
+    <section className={styles.hero} aria-labelledby="hero-title" id="hero">
+      <div className={styles.light} aria-hidden="true" />
+      <div className={styles.horizon} aria-hidden="true" />
+      <div className={styles.body}>
+        <div className={styles.copy}>
+          <p className={styles.eyebrow}>
+            <span className={styles.identityMark} aria-hidden="true" />
+            Dike Uche / Designer &amp; builder
           </p>
-          <span className={styles.footerNote}>Every layer, considered.</span>
-          <a href="#work" className={styles.scrollCue}>
-            Scroll to assemble <span aria-hidden="true">↓</span>
+          <h1 id="hero-title" className={styles.headline}>
+            <span className={styles.design}>
+              Design<span className={styles.punctuation}>,</span>
+            </span>
+            <span className={styles.engineered}>
+              engineered<span className={styles.punctuation}>.</span>
+            </span>
+          </h1>
+          <p className={styles.description}>
+            UX Manager at Western Union. Eight years designing fintech,
+            sportsbook and travel products, and I build what I design.
+          </p>
+          <a href="#work" className={styles.workLink}>
+            Explore the work <span aria-hidden="true">↗</span>
           </a>
         </div>
+        <ProductLayers />
       </div>
     </section>
   );

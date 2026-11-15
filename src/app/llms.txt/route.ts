@@ -6,7 +6,7 @@ export const dynamic = "force-static";
 
 /**
  * llms.txt (llmstxt.org): a plain-text summary of the site for AI crawlers,
- * which read raw responses and never run the GSAP-heavy pages. Generated from
+ * which read raw responses rather than rendered pages. Generated from
  * src/data/projects.ts so it stays in sync with the case studies.
  */
 export function GET() {
