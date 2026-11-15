@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
-import "lenis/dist/lenis.css";
 import "./globals.css";
-import SmoothScroll from "@/components/SmoothScroll";
-import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AskDike from "@/components/AskDike";
@@ -62,7 +59,7 @@ const jsonLd = {
       "@id": personId,
       name: site.name,
       url: site.url,
-      image: `${site.url}/images/me-portrait.webp`,
+      image: `${site.url}${site.portrait.src}`,
       email: `mailto:${site.email}`,
       jobTitle: "UX Manager",
       worksFor: { "@type": "Organization", name: "Western Union" },
@@ -102,8 +99,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // data-scroll-behavior: in-page anchors scroll smoothly (globals.css) while
+    // Next still jumps straight to the top on route changes (v16 upgrade guide).
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${archivo.variable} ${instrument.variable} ${plexMono.variable}`}
     >
       <body>
@@ -113,9 +113,7 @@ export default function RootLayout({
             __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
           }}
         />
-        <SmoothScroll />
-        <Cursor />
-        <div className="grain" />
+        <div className="grain" aria-hidden="true" />
         <Nav />
         <main>{children}</main>
         <Footer />

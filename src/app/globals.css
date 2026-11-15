@@ -3,7 +3,7 @@
 @theme {
   --color-bg: #0a0a0b;
   --color-fg: #eae8e4;
-  --color-muted: #8f8c86;
+  --color-muted: #a5a19a;
   --color-accent: #ff4d24;
   --color-line: rgba(234, 232, 228, 0.14);
 
@@ -16,9 +16,9 @@ html {
   background: var(--color-bg);
   scrollbar-width: thin;
   scrollbar-color: rgba(234, 232, 228, 0.25) transparent;
-  /* clip at the root too: fixed-position chrome (the chat widget) clips against
+  /* clip at the root too: fixed-position chrome (the chat panel) clips against
      the root, not body, so this stops it from ever causing horizontal scroll on
-     mobile. clip (not hidden) keeps sticky / ScrollTrigger pinning intact. */
+     mobile. clip (not hidden) keeps position: sticky working. */
   overflow-x: clip;
 }
 
@@ -40,92 +40,16 @@ body {
   outline-offset: 3px;
 }
 
-/* ---------- type ---------- */
-
-.display {
-  font-family: var(--font-sans);
-  font-weight: 800;
-  font-stretch: 115%;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  line-height: 0.92;
-}
-
-.serif-italic {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: -0.01em;
-}
-
-.kicker {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-/* declared after .kicker so "kicker accent" composes */
-.accent {
-  color: var(--color-accent);
-}
-
-.pulse-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-
-@keyframes pulse-dot {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
-}
-
-.outline-text {
-  -webkit-text-stroke: 1px rgba(234, 232, 228, 0.3);
-  color: transparent;
-}
-
 /* ---------- chrome ---------- */
 
+/* A still film grain over every page. Type lives in Gallery.module.css. */
 .grain {
   position: fixed;
-  inset: -100%;
+  inset: 0;
   z-index: 90;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: grain 7s steps(10) infinite;
-}
-
-@keyframes grain {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  20% {
-    transform: translate(-3%, 2%);
-  }
-  40% {
-    transform: translate(2%, -3%);
-  }
-  60% {
-    transform: translate(-2%, -2%);
-  }
-  80% {
-    transform: translate(3%, 3%);
-  }
 }
 
 /* ---------- touch targets ---------- */
@@ -166,17 +90,12 @@ body {
   transform-origin: left;
 }
 
-/* Let the homepage's product imagery and hero carry the visual interest. */
-body:has(#homepage) .grain,
-body:has(#after-hours) .grain {
-  animation: none;
-  opacity: 0.025;
-}
+/* ---------- motion ---------- */
 
-/* ---------- motion safety ---------- */
-
-@media (prefers-reduced-motion: reduce) {
-  .grain {
-    animation: none;
+/* In-page links (Work, Explore the work) glide instead of jumping. Route
+   changes stay instant: see data-scroll-behavior on <html> in layout.tsx. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }

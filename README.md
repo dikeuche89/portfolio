@@ -1,14 +1,14 @@
 # dikeuche.com
 
-Personal portfolio of Dike Uche — UX designer & full-stack builder.
+Personal portfolio of Dike Uche, UX designer & full-stack builder.
 
-Dark, cinematic single-brand site: oversized Archivo headlines with Instrument Serif italic accents, IBM Plex Mono labels, film grain, custom cursor, Lenis smooth scrolling and GSAP (ScrollTrigger + SplitText) reveal animations.
+A dark, quiet single-brand site: Archivo headlines with Instrument Serif italic accents, IBM Plex Mono labels, and a still film grain. Text is in the HTML and visible on load; the only animation is a one-time wipe on each case study's cover image, done in CSS.
 
 ## Stack
 
 - [Next.js 16](https://nextjs.org) (App Router, static prerendering)
-- [Tailwind CSS v4](https://tailwindcss.com)
-- [GSAP](https://gsap.com) + [Lenis](https://lenis.darkroom.engineering)
+- [Tailwind CSS v4](https://tailwindcss.com) plus CSS Modules for the shared type scale
+- [AI SDK](https://ai-sdk.dev) for the "Ask Dike" chat, downloaded only when someone opens it
 - TypeScript
 
 ## Develop
@@ -20,15 +20,18 @@ npm run build    # production build
 npm run lint
 ```
 
+The chat needs `ANTHROPIC_API_KEY` (see `.env.example`); everything else runs without it.
+
 ## Structure
 
-- `src/data/projects.ts` — all case study content, copy, image manifests and site constants (email, links). Edit this to add or change projects.
-- `src/app/work/[slug]` — case study template, statically generated per project.
-- `src/components/` — motion primitives (`reveal.tsx`, `ParallaxImage`, `SmoothScroll`, `Cursor`) and site chrome (`Nav`, `Footer`, `Hero`, `WorkList`, `Marquee`).
-- `public/images/` — optimized WebP assets (max 1800px wide).
+- `src/data/projects.ts`: all case study content, copy, image manifests and site constants (email, links, portrait). Edit this to add or change projects.
+- `src/app/work/[slug]`: case study template, statically generated per project.
+- `src/components/Gallery.module.css`: the one page shell and type scale shared by Home, About and the case studies.
+- `src/components/`: site chrome (`Nav`, `Footer`), the homepage (`Hero`, `WorkGallery`), and the chat (`AskDike` loads `AskDikePanel` on demand).
+- `public/images/`: optimized WebP assets (max 1800px wide).
 
 ## Deploy
 
-Built for [Vercel](https://vercel.com): push to a Git remote, import the repo in Vercel, done. The domain `dikeuche.com` should be pointed at Vercel once you're ready to switch off Wix.
+Deployed on [Vercel](https://vercel.com) from the `main` branch.
 
-Accessibility/motion: all animations respect `prefers-reduced-motion`; the custom cursor and hover previews only activate on fine-pointer devices.
+Accessibility/motion: the cover wipe and smooth in-page scrolling are skipped under `prefers-reduced-motion`.

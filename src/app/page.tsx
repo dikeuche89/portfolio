@@ -3,13 +3,13 @@ import Link from "next/link";
 import Hero from "@/components/Hero";
 import WorkGallery from "@/components/WorkGallery";
 import { AskDikeTrigger } from "@/components/AskDike";
-import { projects } from "@/data/projects";
+import { projects, site } from "@/data/projects";
 import { featuredTestimonial } from "@/data/testimonials";
 import styles from "@/components/Gallery.module.css";
 
 export default function Home() {
   return (
-    <div id="homepage">
+    <>
       <Hero />
       <div className={styles.shell}>
         <WorkGallery projects={projects} />
@@ -20,12 +20,11 @@ export default function Home() {
         >
           <div className={styles.personGrid}>
             <div className={styles.portrait}>
+              {/* sizes allow for the CSS zoom on this photo (.portrait img) */}
               <Image
-                src="/images/me-portrait.webp"
-                alt="Dike Uche"
-                width={584}
-                height={1600}
-                sizes="(max-width: 560px) 110px, 180px"
+                {...site.portrait}
+                alt={site.portrait.alt}
+                sizes="(max-width: 560px) 150vw, (max-width: 1280px) 50vw, 640px"
               />
             </div>
             <div>
@@ -70,6 +69,6 @@ export default function Home() {
           </figure>
         </section>
       </div>
-    </div>
+    </>
   );
 }
